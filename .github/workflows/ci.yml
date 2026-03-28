@@ -1,0 +1,82 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # {{修改为你的语言版本}}
+  LANGUAGE_VERSION: "3.12"
+
+jobs:
+  lint:
+    name: "🔍 Lint & Format"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # {{根据你的语言和包管理工具修改以下步骤}}
+      - name: Set up environment
+        run: echo "TODO: set up language and dependencies"
+
+      - name: Check formatting
+        run: echo "TODO: run formatter check"
+
+      - name: Check linting
+        run: echo "TODO: run linter"
+
+  type-check:
+    name: "🔬 Type Check"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up environment
+        run: echo "TODO: set up language and dependencies"
+
+      - name: Run type checker
+        run: echo "TODO: run type checker"
+
+  test:
+    name: "✅ Test"
+    runs-on: ubuntu-latest
+    needs: [lint, type-check]
+    env:
+      # {{配置测试环境变量}}
+      DATABASE_URL: "sqlite:///test.db"
+      DEBUG: "true"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up environment
+        run: echo "TODO: set up language and dependencies"
+
+      - name: Run tests with coverage
+        run: echo "TODO: run tests"
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage.xml
+
+  build:
+    name: "🏗️ Build Check"
+    runs-on: ubuntu-latest
+    needs: [test]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up environment
+        run: echo "TODO: set up language and dependencies"
+
+      - name: Verify app can start
+        run: echo "TODO: verify build"
+

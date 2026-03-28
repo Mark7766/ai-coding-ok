@@ -1,0 +1,71 @@
+name: "🐛 Bug Report"
+description: "报告一个 Bug"
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢你提交 Bug 报告！请尽量详细填写以下信息。
+
+  - type: textarea
+    id: description
+    attributes:
+      label: "Bug 描述"
+      description: "清晰简洁地描述 Bug"
+      placeholder: "当我执行 xxx 操作时，发生了 xxx..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: "复现步骤"
+      placeholder: |
+        1. 进入 '...'
+        2. 点击 '...'
+        3. 看到错误
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: "期望行为"
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: "实际行为"
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: "截图/日志"
+      description: "如有截图或错误日志，请粘贴"
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: "严重程度"
+      options:
+        - "🔴 Critical — 系统不可用"
+        - "🟠 High — 核心功能受影响"
+        - "🟡 Medium — 有 workaround"
+        - "🟢 Low — 轻微问题"
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: "环境信息"
+      placeholder: |
+        - OS: [例如 Windows 11]
+        - 语言版本: [例如 Python 3.12]
+        - 浏览器: [例如 Chrome 130]
+

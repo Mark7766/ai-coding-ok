@@ -1,0 +1,50 @@
+# {{项目名称}} — 项目元信息
+# 此文件为机器可读的项目元信息，供 CI/CD、Agent 和工具使用
+
+project:
+  name: "{{project-name}}"
+  description: "{{项目描述}}"
+  version: "0.1.0"
+  stage: "development"  # development / staging / production
+  created: "{{YYYY-MM-DD}}"
+  user_scale: "{{用户规模}}"
+  design_principle: "{{设计原则}}"
+
+tech_stack:
+  language: "{{语言}}"
+  language_version: "{{版本}}"
+  backend_framework: "{{框架}}"
+  frontend: "{{前端方案}}"
+  orm: "{{ORM}}"
+  database: "{{数据库}}"
+  database_driver: "{{驱动}}"
+  test_framework: "{{测试框架}}"
+  config: "{{配置方案}}"
+  package_manager: "{{包管理}}"
+
+code_quality:
+  formatter: "{{格式化工具}}"
+  linter: "{{lint工具}}"
+  type_checker: "{{类型检查}}"
+  test_framework: "{{测试框架}}"
+  min_coverage: 80
+
+commands:
+  install: "{{安装命令}}"
+  dev: "{{开发启动命令}}"
+  test: "{{测试命令}}"
+  test_coverage: "{{覆盖率命令}}"
+  lint: "{{lint命令}}"
+  format: "{{格式化命令}}"
+
+structure:
+  source_dir: "src"
+  test_dir: "tests"
+  docs_dir: "docs"
+  scripts_dir: "scripts"
+
+conventions:
+  commit_format: "conventional-commits"
+  branch_strategy: "github-flow"
+  code_review: "recommended"
+

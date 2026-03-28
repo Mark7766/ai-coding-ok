@@ -1,0 +1,68 @@
+name: Memory Check
+
+# 当核心代码变更时，提醒更新项目记忆文件
+on:
+  pull_request:
+    branches: [main, develop]
+    paths:
+      # {{修改为你项目的源码目录}}
+      - "src/**"
+      - "pyproject.toml"
+
+jobs:
+  memory-check:
+    name: "🧠 Memory Update Check"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if memory files were updated
+        id: memory
+        run: |
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+
+          CORE_CHANGES=false
+          if echo "$CHANGED_FILES" | grep -qE '^(src/)'; then
+            CORE_CHANGES=true
+          fi
+
+          MEMORY_UPDATED=false
+          if echo "$CHANGED_FILES" | grep -qE '\.github/agent/memory/'; then
+            MEMORY_UPDATED=true
+          fi
+
+          echo "core_changes=$CORE_CHANGES" >> $GITHUB_OUTPUT
+          echo "memory_updated=$MEMORY_UPDATED" >> $GITHUB_OUTPUT
+
+      - name: Remind to update memory
+        if: steps.memory.outputs.core_changes == 'true' && steps.memory.outputs.memory_updated == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `## 🧠 记忆更新提醒
+
+            本次 PR 包含核心代码变更，但未更新项目记忆文件。
+
+            请检查是否需要更新以下文件：
+            - \`.github/agent/memory/project-memory.md\` — 项目事实变更
+            - \`.github/agent/memory/decisions-log.md\` — 新的技术决策
+            - \`.github/agent/memory/task-history.md\` — 任务记录
+
+            > 如果本次变更不涉及架构或重大决策，可以忽略此提醒。`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body,
+            });
+
+      - name: Memory update detected
+        if: steps.memory.outputs.memory_updated == 'true'
+        run: echo "✅ Memory files have been updated in this PR"
+
