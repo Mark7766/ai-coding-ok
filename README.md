@@ -1,169 +1,188 @@
-# 🤖 AI Coding OK — Copilot Agent 配置框架
+# 🧠 ai-coding-ok
 
-[![GitHub](https://img.shields.io/badge/GitHub-ai--coding--ok-blue?logo=github)](https://github.com/Mark7766/ai-coding-ok)
+> 一个可以直接安装的 **AI 编程记忆与护栏** skill，Claude Code 和 GitHub Copilot 都能用。
+>
+> 基于实战验证过的 [ai-coding-ok](https://github.com/Mark7766/ai-coding-ok) 框架，把"拷贝文件 + 手动改占位符"的繁琐流程，打包成一条命令 / 一个 slash。
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-
-> **让 AI 像资深工程师一样写代码，而不是像实习生一样堆代码。**
-
-一套从真实生产项目中沉淀出来的 **GitHub Copilot Agent 配置框架**，经过 500+ 测试用例验证。帮你解决 AI 编程的老大难问题：**代码写得快但不敢上线、Bug 修不完、改一个坏三个。**
-
-⭐ 如果对你有帮助，请给个 Star，让更多人看到！
+[![Works with](https://img.shields.io/badge/Works%20with-Claude%20Code%20%7C%20Copilot-blueviolet)](#)
 
 ---
 
-## 🤔 它解决什么问题？
+## 🤔 解决什么问题？
 
-| 你遇到的问题 | 这套框架怎么解决 |
-|------------|---------------|
-| AI 写的代码有很多隐藏 Bug | 强制 AI 每次写功能都附带测试，修 Bug 先写失败用例 |
-| 修一个 Bug 又搞坏其他功能 | 累积的测试用例形成安全网，任何回归立即被发现 |
-| AI 每次对话都"失忆" | 三级记忆系统（长/中/短期），跨会话保持上下文 |
-| AI 写的代码风格混乱 | 详细的编码规范文件，AI 严格遵守 |
-| 不知道 AI 能做什么不能做什么 | 三级权限制度（🟢🟡🔴），行为边界清晰 |
+写代码用 AI 的人都遇到过：
 
----
+- 🧩 **AI 失忆**：换个会话/窗口就不知道你项目长什么样
+- 💥 **改一个，坏三个**：修一个 bug 顺手把别的功能删了
+- 🎯 **风格漂移**：AI 一会儿 PascalCase 一会儿 snake_case
+- 🔒 **越权操作**：AI 删了不该删的文件、改了不该改的配置
+- 🚧 **推广困难**：整套 ai-coding-ok 配置虽然有效，但手动拷贝 + 改占位符对普通用户门槛太高
 
-## 📦 仓库结构
-
-```
-ai-coding-ok/
-├── README.md                          ← 本文件
-├── AGENTS.md.template                 ← 项目地图模板（复制到你的项目根目录）
-└── .github/
-    ├── copilot-instructions.md        ← Copilot 全局行为指令
-    ├── project-metadata.yml           ← 项目元信息（机器可读）
-    ├── PULL_REQUEST_TEMPLATE.md       ← PR 模板（含记忆更新检查）
-    ├── ISSUE_TEMPLATE/
-    │   ├── config.yml
-    │   ├── bug_report.yml
-    │   └── feature_request.yml
-    ├── workflows/
-    │   ├── ci.yml                     ← CI 流水线模板
-    │   └── memory-check.yml           ← 记忆文件更新提醒
-    └── agent/
-        ├── system-prompt.md           ← Agent 核心人格 & PDCA 工作流
-        ├── coding-standards.md        ← 编码规范
-        ├── workflows.md               ← 场景化工作流指南
-        ├── prompt-templates.md        ← Prompt 模板库
-        └── memory/
-            ├── project-memory.md      ← 长期记忆（项目事实）
-            ├── decisions-log.md       ← 技术决策日志（ADR）
-            └── task-history.md        ← 短期记忆（任务历史）
-```
+ai-coding-ok skill 把这一切打包：**一行命令装好，一句话描述需求，AI 自动填满所有配置**。
 
 ---
 
-## 🚀 快速开始（3 步上手）
+## ⚡ 快速开始（30 秒）
 
-### Step 1: 克隆仓库，复制配置到你的项目
+### Claude Code 用户
 
 ```bash
-# 克隆本仓库
-git clone https://github.com/Mark7766/ai-coding-ok.git
+# 1. 安装 skill
+git clone https://github.com/Mark7766/ai-coding-ok ~/.claude/skills/ai-coding-ok
 
-# 复制 .github 目录到你的项目
-cp -r ai-coding-ok/.github your-project/.github
+# 2. 进入你的项目，打开 Claude Code
+cd your-project
+claude
 
-# 复制 AGENTS.md 模板到你的项目根目录
-cp ai-coding-ok/AGENTS.md.template your-project/AGENTS.md
+# 3. 在会话里输入
+/ai-coding-ok
 ```
 
-### Step 2: 告诉 Copilot 你想做什么，让 AI 自动定制所有配置
+Claude 会自动：
+1. 拷贝 16 个模板文件到你的项目
+2. 问你一句话："你想做一个什么东西？"
+3. 根据你这句话推断技术栈、架构、规范，**帮你把所有占位符填好**
+4. 写好第一条任务历史，PDCA 循环就地生效
 
-复制配置文件后，你**不需要手动替换**模板中的 `{{占位符}}`，也**不需要懂技术栈、架构设计这些概念**。
+### GitHub Copilot 用户
 
-打开 Copilot Chat，**只需要用你自己的话说清楚你想做一个什么东西就行：**
+```bash
+# 1. clone
+git clone https://github.com/Mark7766/ai-coding-ok
 
-> 请阅读 `.github/` 下所有配置文件和 `AGENTS.md`，这些文件中有 `{{占位符}}` 需要替换。
->
-> 我想做的东西是：**（用你自己的话描述）**
->
-> 比如：
-> - "我想做一个给自己用的记账小工具，能记录每天花了多少钱，月底能看到饼图统计"
-> - "我想做一个公司内部的请假审批系统，员工提交请假单，主管在线审批"
-> - "我想做一个爬虫，每天自动抓取某个网站的价格数据，存到数据库里"
->
-> 请根据我的需求，自行判断合适的项目名称、技术栈、架构设计和编码规范，然后将所有配置文件中的 `{{占位符}}` 替换为实际内容。
+# 2. 进入你的项目，运行安装脚本
+cd your-project
+bash /path/to/ai-coding-ok/install.sh --copilot
 
-**Copilot 会根据你的需求描述，自动推断出合适的技术选型、架构方案和编码规范，然后一次性替换所有配置文件中的占位符。** 你只需要 Review 一下结果就行了。
+# 3. 打开 Copilot Chat，把 scripts/customize-prompt.md 的内容粘贴进去
+#    Copilot 会自动替换所有占位符
+```
 
-### Step 3: 开始用 Copilot 开发！
-
-从现在起，AI 将自动遵循你定义的规范、流程和约束。每次开发：
-- ✅ 先读记忆，理解上下文
-- ✅ 先出计划，再写代码
-- ✅ 写功能必带测试
-- ✅ 完成后更新记忆
+装好之后，Copilot 每次对话都会自动读取 `.github/copilot-instructions.md`，**PDCA 工作流、记忆系统、三级权限全部生效**。
 
 ---
 
-## 🧠 核心设计理念
-
-### 1. 三层配置体系
-
-| 层级 | 文件 | 作用 | 类比 |
-|------|------|------|------|
-| 第一层 | `AGENTS.md` | 架构速查，AI 最先读取 | 🗺️ 作战地图 |
-| 第二层 | `copilot-instructions.md` | 全局行为指令 | 📋 岗位说明书 |
-| 第三层 | `agent/` 子目录 | 编码规范、工作流、记忆 | 📖 操作手册 |
-
-### 2. 记忆系统（解决 AI 跨会话失忆）
-
-| 记忆类型 | 文件 | 内容 | 更新频率 |
-|---------|------|------|---------|
-| 长期记忆 | `project-memory.md` | 架构、约束、已知问题 | 很少变化 |
-| 中期记忆 | `decisions-log.md` | 技术决策（ADR 格式） | 架构变更时 |
-| 短期记忆 | `task-history.md` | 近 30 条任务摘要 | 每次任务后 |
-
-### 3. PDCA 工作流
+## 📦 它到底装了什么？
 
 ```
-Plan(读记忆→理解→出计划) → Do(写代码+写测试) → Check(跑测试→验回归) → Act(更新记忆)
+你的项目/
+├── AGENTS.md                          ← 🗺️  架构速查（AI 最先读）
+└── .github/
+    ├── copilot-instructions.md        ← 📋 全局行为规则（Copilot 自动加载）
+    ├── project-metadata.yml           ← 🏷️  机器可读的项目元信息
+    ├── PULL_REQUEST_TEMPLATE.md       ← 📝 PR 模板（含记忆更新检查）
+    ├── ISSUE_TEMPLATE/                ← 🐛 Issue 模板
+    ├── workflows/                     ← 🤖 CI + 记忆更新提醒
+    └── agent/
+        ├── system-prompt.md           ← 🎭 Agent 人格 + PDCA 工作流
+        ├── coding-standards.md        ← 📏 编码规范
+        ├── workflows.md               ← 🔄 场景化工作流
+        ├── prompt-templates.md        ← 🧩 Prompt 模板库
+        └── memory/
+            ├── project-memory.md      ← 🧠 长期记忆：项目事实
+            ├── decisions-log.md       ← 📝 中期记忆：技术决策 (ADR)
+            └── task-history.md        ← 📜 短期记忆：近 30 条任务
 ```
-
-### 4. 多角色切换
-
-产品经理 → 架构师 → 后端工程师 → 前端工程师 → 测试工程师 → Code Reviewer
-
-### 5. 三级行为权限
-
-- 🟢 可自主执行（命名优化、补测试、修明显 bug）
-- 🟡 需确认后执行（新增依赖、改数据库、改核心逻辑）
-- 🔴 禁止自主执行（删数据、改凭据、发版本）
 
 ---
 
-## 💡 最佳实践
+## 🧠 三层记忆系统
 
-1. **先写配置，再写代码** — 30 分钟配置，后续省几十小时
-2. **让 AI 定制配置** — Step 2 中描述清楚，AI 自动替换所有占位符
-3. **及时更新记忆** — 每次架构变更后更新 decisions-log
-4. **保持约束清晰** — "绝对不能做"的事写进 AGENTS.md
-5. **定期审查记忆** — 每月检查一次，清理过期信息
+| 层级 | 文件 | 内容 | 更新频率 |
+|------|------|------|---------|
+| 长期 | `project-memory.md` | 架构、约束、已知问题 | 很少 |
+| 中期 | `decisions-log.md` | ADR 格式的技术决策 | 架构变更时 |
+| 短期 | `task-history.md` | 近 30 条任务摘要 | 每次任务 |
+
+AI 每次开始工作**先读这三个文件**，每次结束**写回 task-history**，架构变了再更新另外两个。这就是 AI 跨会话保持上下文的秘诀。
 
 ---
 
-## 🌟 实战验证
+## 🔄 PDCA 工作流
 
-此框架来自一个真实生产项目的实践：
+```
+  Plan           Do            Check          Act
+ ─────▶        ─────▶         ─────▶         ─────▶
+读记忆       写代码          跑测试         更新记忆
+理解意图     写测试          验回归         提交 PR
+出计划       自检            查安全         ...
+```
 
-| 指标 | 数据 |
+每次任务都走一遍，保证"修 bug 不破坏其他功能"有代码 + 记忆双重保障。
+
+---
+
+## 🤝 与 superpowers skill 组合使用（推荐）
+
+[`superpowers`](https://github.com/obra/superpowers) 擅长**发散思考、编排 sub-agent、深度研究**；
+ai-coding-ok 擅长**固化上下文、保证代码质量、跨会话持续**。
+
+**一句话组合法**：
+
+> superpowers 想得深，ai-coding-ok 记得住。
+
+详见 [`docs/superpowers-combo.md`](docs/superpowers-combo.md) 的五个实战配方。
+
+---
+
+## 📖 文档索引
+
+- [Claude Code 快速上手](docs/claude-code-quickstart.md)
+- [GitHub Copilot 快速上手](docs/copilot-quickstart.md)
+- [与 superpowers 组合使用](docs/superpowers-combo.md)
+- [FAQ](docs/faq.md)
+- [SKILL.md](SKILL.md) — skill 本体（Claude Code 会读）
+
+---
+
+## 🚀 命令速查
+
+| 命令 | 作用 |
 |------|------|
-| 测试用例 | 563 个 |
-| 测试覆盖率 | 83%+ |
-| 功能模块 | 15+ |
-| 线上事故 | **0** |
+| `bash install.sh` | 交互式安装（问你装到哪里） |
+| `bash install.sh --claude-code` | 装成 Claude Code skill |
+| `bash install.sh --copilot` | 把模板装到当前 Copilot 项目 |
+| `bash install.sh --copilot --target /path/to/proj` | 装到指定项目 |
+| `bash install.sh --dry-run` | 预览要做什么，不真的写 |
+| `bash install.sh --force` | 覆盖已存在的文件 |
+| `python install.py ...` | 同上，跨平台版本（含 Windows） |
+| `bash scripts/verify.sh` | 检查当前项目装得对不对 + 占位符是否都填了 |
 
 ---
 
-## 🤝 参与贡献
+## 🧪 测试 & 验证
 
-欢迎提 Issue 和 PR！如果你有更好的配置实践，欢迎分享。
+安装后可以随时运行：
+
+```bash
+bash <(curl -sL https://raw.githubusercontent.com/Mark7766/ai-coding-ok/main/scripts/verify.sh)
+# 或本地
+bash /path/to/ai-coding-ok/scripts/verify.sh
+```
+
+它会：
+- ✅ 检查 16 个必需文件是否齐全
+- ⚠️ 统计还有多少 `{{占位符}}` 没填
+- 🎯 退出码：0 = 完美，1 = 缺文件，2 = 占位符没填完
+
+---
+
+## 🧭 设计哲学
+
+1. **一次安装，跨工具通用** — 不给 Claude/Copilot/Cursor 各自写一套配置
+2. **让 AI 定制 AI 的配置** — 用户只说一句"想做什么"，剩下 AI 自己推断
+3. **安全默认** — 不覆盖用户已有文件，除非 `--force`
+4. **可审计** — 所有安装过的动作都能从 `task-history.md` 里回溯
+
+---
+
+## 🤲 贡献
+
+欢迎提 Issue / PR。改模板改到 `templates/` 下，改 skill 行为改 `SKILL.md` 和 `scripts/`，改文档改 `docs/`。
 
 ---
 
 ## 📄 许可
 
-[MIT](LICENSE) — 可自由使用、修改和分发。  
-同时，咱们为关注者搭建了一个专属交流群，欢迎加入一起交流 AI 编程的最佳实践！扫码加群：    
-![developer.png](developer.png)
+[MIT](LICENSE) — 免费商用。
