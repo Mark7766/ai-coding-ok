@@ -4,6 +4,14 @@
 
 ---
 
+## ✨ v2.0 新特性速览
+
+- **三种工作模式**：Install / PDCA / Upgrade
+- **PDCA 自动执行**：任务开始前自动读记忆，结束后自动写记忆
+- **自动升级**：输入 `upgrade ai-coding-ok` 即可升级框架文件
+
+---
+
 ## 1. 安装 skill
 
 Claude Code 会自动加载 `~/.claude/skills/` 下的每个 skill 目录，所以最省事的安装就是：
@@ -84,14 +92,14 @@ bash ~/.claude/skills/ai-coding-ok/scripts/verify.sh
 
 ## 5. 从此刻起的工作方式
 
-每次你给 Claude 新任务时，它都会：
+每次你给 Claude 新任务时，它都会**自动**：
 
 1. **Plan**：先读 `AGENTS.md` + `.github/agent/memory/*.md`，再出计划
 2. **Do**：按计划写代码 + 写测试
 3. **Check**：跑测试，看有没有回归
 4. **Act**：把这次任务写进 `task-history.md`；架构变了再动 `decisions-log.md`
 
-你不需要手动提醒它做这些 — `SKILL.md` 已经把规则植入进去了。
+> 💡 v2.0 起，PDCA 工作流是**强制执行**的 — `AGENTS.md` 和 `copilot-instructions.md` 顶部的强制指令块确保 AI 不会跳过这些步骤。你不需要手动提醒。
 
 ---
 
@@ -101,7 +109,14 @@ bash ~/.claude/skills/ai-coding-ok/scripts/verify.sh
 A: 不会。skill 发现冲突会停下来问你。安装脚本也默认 `cp -n`（不覆盖）。
 
 **Q: 我想升级到最新版 skill 怎么办？**
-A: `cd ~/.claude/skills/ai-coding-ok && git pull`。模板更新只影响**新项目**，已经定制好的项目不会被动。
+A: 两步：
+1. 升级 skill 仓库：`cd ~/.claude/skills/ai-coding-ok && git pull`
+2. 升级项目框架文件：在项目里输入 `upgrade ai-coding-ok`，Claude 会自动合并框架更新并保留你的项目定制内容。
+
+**Q: 什么时候会自动触发 PDCA？（v2.0）**
+A: 只要项目里有 `.github/agent/memory/` 目录，任何开发任务都会自动触发：
+- 任务开始 → 自动执行 Mode B（读取记忆）
+- 任务结束 → 自动执行 Mode C（更新记忆）
 
 **Q: 我不想让 skill 自动读记忆怎么办？**
 A: 删掉 `.github/agent/memory/` 即可，其余规则仍有效。

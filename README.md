@@ -6,6 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Works with](https://img.shields.io/badge/Works%20with-Claude%20Code%20%7C%20Copilot-blueviolet)](#)
+[![Version](https://img.shields.io/badge/Version-v2.0-blue)](#)
 
 ---
 
@@ -20,6 +21,29 @@
 - 🚧 **推广困难**：整套 ai-coding-ok 配置虽然有效，但手动拷贝 + 改占位符对普通用户门槛太高
 
 ai-coding-ok skill 把这一切打包：**一行命令装好，一句话描述需求，AI 自动填满所有配置**。
+
+---
+
+## ✨ v2.0 新特性
+
+### 🔄 三种工作模式
+
+| 模式 | 触发条件 | 作用 |
+|------|---------|------|
+| **Mode A — Install** | 新项目 / 输入 "install ai-coding-ok" | 首次安装，拷贝模板 + 定制占位符 |
+| **Mode B — PDCA Plan** | 项目已有 `.github/agent/memory/` + 任意开发任务 | 任务开始前自动读取记忆文件 |
+| **Mode C — PDCA Act** | 任务完成时 | 自动更新 task-history / decisions-log |
+| **Mode D — Upgrade** | 输入 "upgrade ai-coding-ok" | 自动升级框架文件，保留项目定制内容 |
+
+### 🎯 PDCA 强制执行
+
+v2.0 在 `AGENTS.md` 和 `copilot-instructions.md` 顶部嵌入了强制指令，确保 AI **每次任务都执行 PDCA**：
+- 任务开始前：自动读取 4 个记忆文件
+- 任务结束后：自动更新记忆（不可跳过）
+
+### 🏷️ 版本标记
+
+所有模板文件都带版本标记（`<!-- ai-coding-ok: v2.0 -->`），支持自动化升级检测。
 
 ---
 
@@ -44,6 +68,8 @@ Claude 会自动：
 2. 问你一句话："你想做一个什么东西？"
 3. 根据你这句话推断技术栈、架构、规范，**帮你把所有占位符填好**
 4. 写好第一条任务历史，PDCA 循环就地生效
+
+> 💡 v2.0 起，**PDCA 工作流自动执行** — 任务开始前自动读记忆，结束后自动写记忆，无需手动提醒。
 
 ### GitHub Copilot 用户
 
@@ -133,6 +159,25 @@ ai-coding-ok 擅长**固化上下文、保证代码质量、跨会话持续**。
 - [与 superpowers 组合使用](docs/superpowers-combo.md)
 - [FAQ](docs/faq.md)
 - [SKILL.md](SKILL.md) — skill 本体（Claude Code 会读）
+- [CHANGELOG](CHANGELOG.md) — 版本变更记录
+
+---
+
+## 🔄 升级已安装的项目
+
+### Claude Code 用户
+
+在已安装 ai-coding-ok 的项目里：
+
+```
+upgrade ai-coding-ok
+```
+
+Claude 会自动：检测版本 → 识别变更 → 合并框架更新（保留你的项目定制内容）→ 更新版本标记
+
+### Copilot 用户
+
+把 [`scripts/upgrade-prompt.md`](scripts/upgrade-prompt.md) 的内容粘贴到 Copilot Chat 执行。
 
 ---
 

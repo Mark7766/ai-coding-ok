@@ -1,3 +1,4 @@
+<!-- ai-coding-ok: v2.0 -->
 # 🧩 {{项目名称}} — Prompt 模板库
 
 > AI Agent 在不同场景下使用的标准 Prompt 模板。

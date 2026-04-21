@@ -1,4 +1,24 @@
+<!-- ai-coding-ok: v2.0 -->
 # AGENTS.md — {{项目名称}}
+
+## ⚠️ AI Agent 必读规范（每次任务必须执行）
+
+本项目使用 [ai-coding-ok](https://github.com/Mark7766/ai-coding-ok) 三层记忆系统。**在执行任何任务之前，必须完成以下步骤：**
+
+### Plan 阶段（强制，任务开始前）
+1. 读取 `.github/agent/memory/project-memory.md` — 了解项目事实和架构约束
+2. 读取 `.github/agent/memory/decisions-log.md` — 了解历史技术决策
+3. 读取 `.github/agent/memory/task-history.md` — 了解近期任务上下文
+
+### Act 阶段（强制，任务结束后）
+1. 更新 `.github/agent/memory/task-history.md` — 记录本次任务摘要
+2. 如有架构决策变化 → 更新 `.github/agent/memory/decisions-log.md`
+3. 如有项目事实变化 → 更新 `.github/agent/memory/project-memory.md`
+
+> ⛔ 以上步骤不可跳过。若在使用 superpowers brainstorming / writing-plans，
+> 在调用这些 skill **之前**先完成 Plan 阶段，**结束后**完成 Act 阶段。
+
+---
 
 ## 项目概述
 

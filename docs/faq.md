@@ -1,5 +1,31 @@
 # FAQ
 
+## v2.0 新特性
+
+### Q0: v2.0 改了什么？
+
+主要改动：
+1. **三种工作模式**：Install（首次安装）/ PDCA（日常使用）/ Upgrade（升级）
+2. **PDCA 强制执行**：`AGENTS.md` 和 `copilot-instructions.md` 顶部嵌入强制指令，确保 AI 每次都执行 PDCA
+3. **版本标记**：所有模板文件带 `<!-- ai-coding-ok: v2.0 -->` 标记
+4. **自动升级**：输入 `upgrade ai-coding-ok` 可自动升级框架文件
+
+详见 [CHANGELOG.md](../CHANGELOG.md)。
+
+### Q0.1: 怎么升级已安装的项目到 v2.0？
+
+**Claude Code 用户**：在项目里输入 `upgrade ai-coding-ok`
+
+**Copilot 用户**：把 `scripts/upgrade-prompt.md` 内容粘贴到 Copilot Chat
+
+升级会：
+- 添加 PDCA 强制指令块
+- 添加版本标记
+- 强化收尾步骤标注
+- 保留你的项目定制内容（项目名、技术栈、架构图等不变）
+
+---
+
 ## 安装 & 兼容性
 
 ### Q1: ai-coding-ok 和 ai-coding-ok 是什么关系？
@@ -87,8 +113,15 @@ rm -rf .github/copilot-instructions.md .github/project-metadata.yml \
 
 ### Q11: 升级 skill 会不会把我改过的文件覆盖？
 
-不会。升级 skill（`git pull ~/.claude/skills/ai-coding-ok`）只更新 skill 仓库本身，**不会主动动你项目里的 `.github/`**。
-下次你对**新项目**跑 `/ai-coding-ok` 时才会用新模板。
+**不会。** v2.0 提供两种升级方式：
+
+1. **升级 skill 仓库**（`git pull`）：只更新 skill 本身，不触碰你项目里的文件
+2. **升级项目框架文件**（`upgrade ai-coding-ok`）：智能合并框架更新，保留项目定制内容
+
+升级项目时，AI 会：
+- 识别框架变更（新增/删除/修改章节）
+- 展示变更清单并**请求确认**
+- 只更新框架部分，不覆盖你的项目名、技术栈、架构图等定制内容
 
 ---
 

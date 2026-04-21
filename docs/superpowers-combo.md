@@ -7,6 +7,18 @@
 
 ---
 
+## ✨ v2.0 组合增强
+
+v2.0 专门优化了与 superpowers 的协作：
+
+1. **AGENTS.md hook**：brainstorming 的 Step 1 读 AGENTS.md 时会遇到 PDCA 强制指令
+2. **writing-plans 兼容**：生成的计划自动追加「更新项目记忆」任务
+3. **双路径覆盖**：无论用 superpowers 还是直接用 ai-coding-ok，PDCA 都会执行
+
+详见 [SKILL.md](../SKILL.md) 的「Compatibility with superpowers skill」章节。
+
+---
+
 ## 为什么要组合？
 
 |              | superpowers | ai-coding-ok |
@@ -139,7 +151,7 @@ Claude 会：
 
 ❌ **让两个 skill 都写同一个文件** — 容易打架。分工：superpowers 产出"方案 markdown"放 `docs/`；ai-coding-ok 把"方案摘要 + 选择理由"写进 `decisions-log.md`。
 
-❌ **忘记在 superpowers 结束后同步到记忆** — superpowers 的思考成果如果只留在那次会话里，等于白想。每次 superpowers 跑完都要问 ai-coding-ok："这次讨论里有没有新决策需要入库？"
+> 💡 v2.0 改进：ai-coding-ok 现在会**自动**在 superpowers 流程结束后触发 Mode C（Act），同步记忆。你不再需要手动提醒。
 
 ---
 
@@ -159,13 +171,13 @@ Claude 会：
 
 Claude 每次会话都会继承这个偏好，相当于把 ai-coding-ok 的 Plan/Act 默认打开。
 
-### 给 superpowers 的 hint
+### 给 superpowers 的 hint（v2.0 前需要，v2.0 后自动）
 
-用 superpowers 之前，给它一句 prompt 前缀：
+v2.0 起，`AGENTS.md` 顶部已嵌入 PDCA 强制指令。当 brainstorming 读取 AGENTS.md 时，会自动遇到 PDCA 要求。
+
+如果你用的是 v1.0，可以手动给 superpowers 一句 prompt 前缀：
 
 > "运行前先读 `.github/agent/memory/project-memory.md` 理解约束，运行后把关键产出存进 `.github/agent/memory/decisions-log.md` 的新 ADR。"
-
-这样即便 sub-agent 是一次性的，它的成果也能被 ai-coding-ok 捞回来。
 
 ---
 

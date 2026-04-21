@@ -1,3 +1,25 @@
+<!-- ai-coding-ok: v2.0 -->
+<!-- ⛔ MANDATORY: AI Agent MUST execute these steps for EVERY request -->
+
+## ⚠️ 强制执行：PDCA 工作流
+
+本项目使用 ai-coding-ok 三层记忆系统。**每次处理任务前必须执行 Plan，完成后必须执行 Act。**
+
+### 任务开始前（Plan）
+1. 读取 `AGENTS.md`
+2. 读取 `.github/agent/memory/project-memory.md`
+3. 读取 `.github/agent/memory/decisions-log.md`
+4. 读取 `.github/agent/memory/task-history.md`
+
+### 任务结束后（Act）
+1. 更新 `.github/agent/memory/task-history.md`
+2. 如有架构决策 → 更新 `.github/agent/memory/decisions-log.md`
+3. 如有项目事实变化 → 更新 `.github/agent/memory/project-memory.md`
+
+> 跳过以上步骤视为不合规。如果任务过于简单（纯问答、代码解释），可跳过 Act 但仍需执行 Plan。
+
+---
+
 # Copilot Instructions — {{项目名称}}
 
 > 本文件是 GitHub Copilot（含 Copilot Chat、Copilot Coding Agent）在本仓库中的全局行为指令。
@@ -148,14 +170,4 @@ Agent 完成任务时，输出应包含：
 ```
 
 ---
-
-## 🔗 上下文文件引用
-
-处理任务时，请优先阅读以下文件获取上下文：
-
-1. `AGENTS.md` — 系统架构速查
-2. `.github/agent/memory/project-memory.md` — 项目长期记忆
-3. `.github/agent/memory/decisions-log.md` — 技术决策日志
-4. `.github/agent/memory/task-history.md` — 近期任务历史
-5. `.github/agent/coding-standards.md` — 编码规范
 

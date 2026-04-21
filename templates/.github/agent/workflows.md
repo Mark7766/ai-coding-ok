@@ -1,3 +1,4 @@
+<!-- ai-coding-ok: v2.0 -->
 # 🔄 {{项目名称}} — Agent 工作流指南
 
 > 定义 AI Agent 在不同场景下的标准工作流程。
@@ -30,8 +31,8 @@ Step 4: 测试
   ├── 编写集成测试
   └── 运行全部测试确认无回归
 
-Step 5: 收尾
-  ├── 更新 task-history.md
+Step 5: 收尾 ⚠️ 不可跳过
+  ├── 更新 task-history.md ← 必须
   ├── 如有架构决策 → 更新 decisions-log.md
   ├── 如有项目事实变化 → 更新 project-memory.md
   └── 提交代码（Conventional Commits 格式）
@@ -60,8 +61,8 @@ Step 4: 验证
   ├── 运行全部测试
   └── 确认无副作用
 
-Step 5: 收尾
-  ├── 更新 task-history.md
+Step 5: 收尾 ⚠️ 不可跳过
+  ├── 更新 task-history.md ← 必须
   └── 如果是常见坑 → 更新 project-memory.md
 ```
 
@@ -83,6 +84,11 @@ Step 2: 小步重构
 Step 3: 验证
   ├── 全部测试通过
   └── 代码可读性确实提升了
+
+Step 4: 收尾 ⚠️ 不可跳过
+  ├── 更新 task-history.md ← 必须
+  ├── 如重构改变了模块结构 → 更新 project-memory.md
+  └── 如有技术决策 → 更新 decisions-log.md
 ```
 
 ---

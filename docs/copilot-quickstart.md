@@ -4,6 +4,14 @@
 
 ---
 
+## ✨ v2.0 新特性速览
+
+- **PDCA 强制执行**：`copilot-instructions.md` 顶部内置强制指令，确保每次任务都执行 PDCA
+- **版本标记**：所有模板文件带版本标记，支持自动化升级检测
+- **升级脚本**：`scripts/upgrade-prompt.md` 支持一键升级已安装项目
+
+---
+
 ## 1. 克隆 ai-coding-ok（只需一次）
 
 ```bash
@@ -81,19 +89,22 @@ git commit -m "chore: install ai-coding-ok (ai-coding-ok framework)"
 
 ## 6. 日常怎么用？
 
-Copilot 会自动读 `.github/copilot-instructions.md`，所以**你不用做任何特殊操作**。但有两个好习惯：
+Copilot 会自动读 `.github/copilot-instructions.md`，**v2.0 起 PDCA 工作流是强制执行的**：
 
-### 🪢 任务开始前
+### 🔄 自动执行（无需手动提醒）
 
-跟 Copilot 说：
+- **任务开始前**：Copilot 会自动读取 `AGENTS.md` + 4 个记忆文件
+- **任务结束后**：Copilot 会自动更新 `task-history.md`（如有架构变化也更新相应文件）
 
-> 读一下 `.github/agent/memory/` 下所有文件，告诉我你理解的项目上下文，然后开始执行：<你的任务>
+> 💡 v2.0 在 `copilot-instructions.md` 顶部增加了强制指令块，确保 Copilot 不会跳过这些步骤。
 
-### 🧾 任务结束后
+### 🛡️ 万一 Copilot 忘了
 
-让 Copilot 自检：
+如果 Copilot 某次没执行 PDCA（比如遇到 bug 或上下文过长），可以手动提醒：
 
-> 按 `.github/agent/system-prompt.md` 里的 Act 阶段要求，把这次变更写进 `task-history.md`。如果改动了架构，也更新 `decisions-log.md`。
+```
+按 `.github/agent/system-prompt.md` 里的 Act 阶段要求，把这次变更写进 `task-history.md`。
+```
 
 CI 上的 `memory-check.yml` 会在你忘记更新记忆时在 PR 里留言提醒你。
 
@@ -129,4 +140,5 @@ done
 
 - 占位符没填完：重新粘贴 `scripts/customize-prompt.md` 到 Copilot Chat
 - 想回滚：`git checkout -- AGENTS.md .github/` 再删没 commit 的新增文件
-- 模板过期想同步最新版：`cd ~/tools/ai-coding-ok && git pull`，然后 `install.sh --copilot --force`（注意：会覆盖你项目里的文件，建议先备份）
+- 模板过期想同步最新版：`cd ~/tools/ai-coding-ok && git pull`，然后用 `scripts/upgrade-prompt.md` 升级项目
+- **升级到 v2.0**：把 `scripts/upgrade-prompt.md` 内容粘贴到 Copilot Chat，会自动添加版本标记和 PDCA 强制指令
