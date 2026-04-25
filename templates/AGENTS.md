@@ -1,4 +1,4 @@
-<!-- ai-coding-ok: v2.0 -->
+<!-- ai-coding-ok: v2.1.0 -->
 # AGENTS.md — {{项目名称}}
 
 ## ⚠️ AI Agent 必读规范（每次任务必须执行）

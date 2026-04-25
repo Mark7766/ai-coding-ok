@@ -283,7 +283,7 @@ This is the mechanism that prevents "AI fixed bug X and deleted feature Y".
 如果任何文件缺少版本标记，视为 v1.0（初版，无标记）。
 
 将检测到的版本报告给用户：
-> "检测到项目 ai-coding-ok 版本：v1.0。最新模板版本：v2.0。" 
+> "检测到项目 ai-coding-ok 版本：v2.0。最新模板版本：v2.1.0。" 
 
 ### Step 2 — 读取最新模板
 
@@ -301,15 +301,21 @@ This is the mechanism that prevents "AI fixed bug X and deleted feature Y".
   2. **删除章节**：模板中移除、项目中还在 → 提示用户确认是否删除
   3. **修改章节**：模板中章节内容变了 → 需要智能合并
 
-输出变更摘要，例如：
+输出变更摘要，例如（v2.0 → v2.1.0）：
 ```
 升级变更清单：
-✅ AGENTS.md — 新增「⚠️ AI Agent 必读规范」章节（在标题后插入）
-✅ copilot-instructions.md — 新增顶部「⚠️ 强制执行：PDCA 工作流」章节
-✅ copilot-instructions.md — 删除末尾「🔗 上下文文件引用」章节（已被顶部替代）
-✅ workflows.md — 修改 Step 5 收尾步骤（增加 ⚠️ 不可跳过标注）
-✅ 所有文件 — 更新版本标记 v1.0 → v2.0
+✅ .cursor/rules/ai-coding-ok.mdc — 新增（Cursor alwaysApply PDCA 规则）
+✅ 所有文件 — 更新版本标记 v2.0 → v2.1.0
 ```
+
+> 📌 **历史升级路径参考**（按当前安装版本选择对应行）：
+>
+> | 升级路径 | 主要变更 |
+> |----------|----------|
+> | v1.0 → v2.0 | AGENTS.md / copilot-instructions.md 新增 PDCA 强制指令章节；workflows.md Step 5 加「⚠️ 不可跳过」标注；所有文件添加版本标记 |
+> | v2.0 → v2.1.0 | 新增 `templates/.cursor/rules/ai-coding-ok.mdc`（Cursor 支持）；所有版本标记 v2.0 → v2.1.0 |
+>
+> 跨多个版本时按顺序逐级应用（如 v1.0 → v2.0 → v2.1.0）。
 
 ### Step 4 — 请求用户确认
 
@@ -395,6 +401,7 @@ Copilot does not load SKILL.md. Copilot users get the same value by:
 
 - `templates/` — source of truth for all installed files.
 - `scripts/customize-prompt.md` — the customization prompt to feed Copilot.
+- `scripts/upgrade-prompt.md` — manual upgrade prompt for Copilot / Cursor (no skill system).
 - `scripts/verify.sh` — post-install sanity check.
 - `docs/claude-code-quickstart.md` — Claude Code users.
 - `docs/copilot-quickstart.md` — Copilot users.
