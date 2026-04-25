@@ -14,6 +14,7 @@ description: >-
   "升级 ai-coding-ok", or "更新 ai-coding-ok": reads version markers from
   project files, compares with latest templates, and applies framework-level
   changes while preserving project-specific customizations.
+compatibility: opencode, claude, cursor
 ---
 
 # Memory Manager

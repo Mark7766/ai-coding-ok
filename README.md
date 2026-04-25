@@ -1,11 +1,11 @@
 # 🧠 ai-coding-ok
 
-> 一个可以直接安装的 **AI 编程记忆与护栏** skill，Claude Code 和 GitHub Copilot 都能用。
+> 一个可以直接安装的 **AI 编程记忆与护栏** skill，Claude Code、GitHub Copilot、OpenCode、Cursor 都能用。
 >
 > 基于实战验证过的 [ai-coding-ok](https://github.com/Mark7766/ai-coding-ok) 框架，把"拷贝文件 + 手动改占位符"的繁琐流程，打包成一条命令 / 一个 slash。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Works with](https://img.shields.io/badge/Works%20with-Claude%20Code%20%7C%20Copilot-blueviolet)](#)
+[![Works with](https://img.shields.io/badge/Works%20with-Claude%20Code%20%7C%20Copilot%20%7C%20OpenCode%20%7C%20Cursor-blueviolet)](#)
 [![Version](https://img.shields.io/badge/Version-v2.0-blue)](#)
 
 ---
@@ -87,6 +87,36 @@ bash /path/to/ai-coding-ok/install.sh --copilot
 
 装好之后，Copilot 每次对话都会自动读取 `.github/copilot-instructions.md`，**PDCA 工作流、记忆系统、三级权限全部生效**。
 
+### OpenCode 用户
+
+```bash
+# 1. 安装 skill（与 Claude Code 共用同一路径）
+git clone https://github.com/Mark7766/ai-coding-ok ~/.claude/skills/ai-coding-ok
+
+# 2. 进入你的项目，打开 OpenCode
+cd your-project
+opencode
+
+# 3. 在会话里输入
+install ai-coding-ok
+```
+
+> 💡 OpenCode 会自动从 `~/.claude/skills/` 加载技能，无需额外配置。
+> 如果遇到技能不自动触发，运行 `bash install.sh --opencode` 来更新全局 AGENTS.md。
+
+### Cursor 用户
+
+```bash
+# 1. 进入你的项目，运行安装脚本
+cd your-project
+bash /path/to/ai-coding-ok/install.sh --cursor
+
+# 2. 在 Cursor Agent 中输入
+install ai-coding-ok
+```
+
+安装后，Cursor 会通过 `.cursor/rules/ai-coding-ok.mdc`（`alwaysApply: true`）在**每次会话**自动执行 PDCA 流程，无需手动触发。
+
 ---
 
 ## 📦 它到底装了什么？
@@ -94,6 +124,9 @@ bash /path/to/ai-coding-ok/install.sh --copilot
 ```
 你的项目/
 ├── AGENTS.md                          ← 🗺️  架构速查（AI 最先读）
+├── .cursor/
+│   └── rules/
+│       └── ai-coding-ok.mdc           ← ⚡ Cursor 专属：alwaysApply PDCA 规则
 └── .github/
     ├── copilot-instructions.md        ← 📋 全局行为规则（Copilot 自动加载）
     ├── project-metadata.yml           ← 🏷️  机器可读的项目元信息
@@ -156,6 +189,8 @@ ai-coding-ok 擅长**固化上下文、保证代码质量、跨会话持续**。
 
 - [Claude Code 快速上手](docs/claude-code-quickstart.md)
 - [GitHub Copilot 快速上手](docs/copilot-quickstart.md)
+- [OpenCode 快速上手](docs/opencode-quickstart.md)
+- [Cursor 快速上手](docs/cursor-quickstart.md)
 - [与 superpowers 组合使用](docs/superpowers-combo.md)
 - [FAQ](docs/faq.md)
 - [SKILL.md](SKILL.md) — skill 本体（Claude Code 会读）
@@ -187,7 +222,9 @@ Claude 会自动：检测版本 → 识别变更 → 合并框架更新（保留
 |------|------|
 | `bash install.sh` | 交互式安装（问你装到哪里） |
 | `bash install.sh --claude-code` | 装成 Claude Code skill |
+| `bash install.sh --opencode` | 装成 OpenCode skill + 更新全局 AGENTS.md |
 | `bash install.sh --copilot` | 把模板装到当前 Copilot 项目 |
+| `bash install.sh --cursor` | 把模板 + `.cursor/rules/` 装到当前 Cursor 项目 |
 | `bash install.sh --copilot --target /path/to/proj` | 装到指定项目 |
 | `bash install.sh --dry-run` | 预览要做什么，不真的写 |
 | `bash install.sh --force` | 覆盖已存在的文件 |
