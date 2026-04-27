@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.2.0] - 2026-04-27
+
+### Added
+- **`templates/CLAUDE.md`**：Claude Code 自动加载 shim，内容为 `@AGENTS.md` import。这是 Claude Code 的"硬保险"——即使 skill description 没匹配上、即使是新会话还没主动读 AGENTS.md，PDCA 强制指令也会通过 CLAUDE.md → AGENTS.md 的 import 链路被触发。补齐了 v2.1.0 之前 Claude Code 在「新会话 + 简短指令」组合下偶发的 PDCA 漏触发问题。
+- **install.sh / install.py**：Copilot 和 Cursor 模式的冲突检查列表加入 `CLAUDE.md`，避免覆盖用户已有文件
+- **SKILL.md**：安装目录树和占位符替换文件清单同步加入 `CLAUDE.md`
+
+### Modified
+- **SKILL.md `description` 重写**：句首改为命令式 "USE THIS SKILL FIRST on every coding task (feat, fix, bug, refactor, plan, design, brainstorm, code review, implement, add feature, write tests, 新功能, 修复, 重构) whenever the project contains `.github/agent/memory/` or `AGENTS.md`"，把高频 PDCA 触发词（含中英双语）前置，把 INSTALL / UPGRADE 降为从属子句。显著提升 Claude Code skill 自动调用的语义匹配命中率。
+- **所有模板文件**：版本标记 `v2.1.0` → `v2.2.0`
+
+### Why this release
+v2.1.0 实战录视频时发现：在「新会话 + 一句话指令（如"加个收入功能"）」场景下，Claude Code 既没命中 ai-coding-ok skill（旧 description 句首 "Three modes: (1) INSTALL — sets up..." 让语义匹配器误判为安装类工具），又没主动读 AGENTS.md，导致 PDCA 整圈漏触发。v2.2.0 从两端同时加固：description 让 skill 路径更稳，CLAUDE.md import 让自动加载路径不可绕过。
+
+---
+
 ## [v2.1.0] - 2026-04-26
 
 ### Added

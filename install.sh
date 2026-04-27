@@ -143,7 +143,7 @@ install_copilot() {
 
   # Conflict check
   local -a conflicts=()
-  for p in AGENTS.md .github/copilot-instructions.md .github/agent; do
+  for p in AGENTS.md CLAUDE.md .github/copilot-instructions.md .github/agent; do
     [[ -e "$dest/$p" ]] && conflicts+=("$p")
   done
   if [[ ${#conflicts[@]} -gt 0 && "$FORCE" != "1" ]]; then
@@ -175,7 +175,7 @@ install_cursor() {
 
   # Conflict check
   local -a conflicts=()
-  for p in AGENTS.md .cursor/rules/ai-coding-ok.mdc .github/agent; do
+  for p in AGENTS.md CLAUDE.md .cursor/rules/ai-coding-ok.mdc .github/agent; do
     [[ -e "$dest/$p" ]] && conflicts+=("$p")
   done
   if [[ ${#conflicts[@]} -gt 0 && "$FORCE" != "1" ]]; then
@@ -187,7 +187,7 @@ install_cursor() {
 
   if [[ "$DRY_RUN" == "1" ]]; then
     log "[dry-run] would merge $TEMPLATES_DIR/ into $dest/"
-    log "[dry-run] AGENTS.md, .cursor/rules/ai-coding-ok.mdc, and .github/agent/memory/ would be created"
+    log "[dry-run] AGENTS.md, CLAUDE.md, .cursor/rules/ai-coding-ok.mdc, and .github/agent/memory/ would be created"
     return 0
   fi
 

@@ -25,8 +25,8 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 TEMPLATES_DIR = SCRIPT_DIR / "templates"
-CONFLICT_PATHS_COPILOT = ("AGENTS.md", ".github/copilot-instructions.md", ".github/agent")
-CONFLICT_PATHS_CURSOR  = ("AGENTS.md", ".cursor/rules/ai-coding-ok.mdc", ".github/agent")
+CONFLICT_PATHS_COPILOT = ("AGENTS.md", "CLAUDE.md", ".github/copilot-instructions.md", ".github/agent")
+CONFLICT_PATHS_CURSOR  = ("AGENTS.md", "CLAUDE.md", ".cursor/rules/ai-coding-ok.mdc", ".github/agent")
 
 
 def log(msg: str) -> None:

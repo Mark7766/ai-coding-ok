@@ -1,19 +1,21 @@
 ---
 name: ai-coding-ok
 description: >-
-  Three modes: (1) INSTALL — sets up the ai-coding-ok three-tier memory system
-  (project-memory, decisions-log, task-history) plus coding guardrails when the
-  user says "set up project memory", "install ai-coding-ok", "initialize AI
-  guardrails", or the project has no .github/agent/memory/ yet.
-  (2) PDCA WORKFLOW — for ANY coding task (feat, fix, refactor, plan, design,
-  review, brainstorming) when the project ALREADY HAS .github/agent/memory/
-  or AGENTS.md: loads project context before work, enforces memory updates
-  after work. ALWAYS invoke this skill when .github/agent/memory/ exists,
-  regardless of the task type.
-  (3) UPGRADE — when the user says "upgrade ai-coding-ok", "update ai-coding-ok",
-  "升级 ai-coding-ok", or "更新 ai-coding-ok": reads version markers from
-  project files, compares with latest templates, and applies framework-level
-  changes while preserving project-specific customizations.
+  USE THIS SKILL FIRST on every coding task (feat, fix, bug, refactor, plan,
+  design, brainstorm, code review, implement, add feature, write tests,
+  新功能, 修复, 重构) whenever the project contains `.github/agent/memory/`
+  or `AGENTS.md`. It loads three-tier project memory (project-memory,
+  decisions-log, task-history) and AGENTS.md BEFORE you write code, then
+  updates task-history (always), decisions-log (on architecture changes)
+  and project-memory (on fact changes) AFTER you finish — this is the PDCA
+  guardrail that prevents "AI fixed bug X and broke feature Y".
+  Also handles INSTALL: when the user asks to "install ai-coding-ok",
+  "set up project memory", "initialize AI guardrails", or the project has
+  no `.github/agent/memory/` yet, copy templates and customize placeholders.
+  Also handles UPGRADE: when the user says "upgrade ai-coding-ok",
+  "update ai-coding-ok", "升级 ai-coding-ok", or "更新 ai-coding-ok",
+  diff project files against latest templates and apply framework-level
+  changes while preserving project customizations.
 compatibility: opencode, claude, cursor
 ---
 
@@ -28,6 +30,7 @@ When activated in a project, the skill copies a curated set of files into the ta
 ```
 <project-root>/
 ├── AGENTS.md                              # Architecture cheatsheet (AI reads first)
+├── CLAUDE.md                              # Claude Code auto-load shim → @AGENTS.md
 └── .github/
     ├── copilot-instructions.md            # Global behavior rules (Copilot auto-loads)
     ├── project-metadata.yml               # Machine-readable project facts
@@ -167,6 +170,7 @@ Based on the user's sentence, infer:
 Then walk every copied file and replace every `{{...}}` placeholder with the inferred value. Files to process:
 
 - `AGENTS.md`
+- `CLAUDE.md` (Claude Code shim — typically just `@AGENTS.md`, no placeholder, but verify)
 - `.github/copilot-instructions.md`
 - `.github/project-metadata.yml`
 - `.github/ISSUE_TEMPLATE/config.yml`
@@ -283,7 +287,7 @@ This is the mechanism that prevents "AI fixed bug X and deleted feature Y".
 如果任何文件缺少版本标记，视为 v1.0（初版，无标记）。
 
 将检测到的版本报告给用户：
-> "检测到项目 ai-coding-ok 版本：v2.0。最新模板版本：v2.1.0。" 
+> "检测到项目 ai-coding-ok 版本：v2.1.0。最新模板版本：v2.2.0。" 
 
 ### Step 2 — 读取最新模板
 
@@ -301,11 +305,11 @@ This is the mechanism that prevents "AI fixed bug X and deleted feature Y".
   2. **删除章节**：模板中移除、项目中还在 → 提示用户确认是否删除
   3. **修改章节**：模板中章节内容变了 → 需要智能合并
 
-输出变更摘要，例如（v2.0 → v2.1.0）：
+输出变更摘要，例如（v2.1.0 → v2.2.0）：
 ```
 升级变更清单：
-✅ .cursor/rules/ai-coding-ok.mdc — 新增（Cursor alwaysApply PDCA 规则）
-✅ 所有文件 — 更新版本标记 v2.0 → v2.1.0
+✅ templates/CLAUDE.md — 新增（Claude Code 自动加载 shim，@AGENTS.md import）
+✅ 所有文件 — 更新版本标记 v2.1.0 → v2.2.0
 ```
 
 > 📌 **历史升级路径参考**（按当前安装版本选择对应行）：
@@ -314,8 +318,9 @@ This is the mechanism that prevents "AI fixed bug X and deleted feature Y".
 > |----------|----------|
 > | v1.0 → v2.0 | AGENTS.md / copilot-instructions.md 新增 PDCA 强制指令章节；workflows.md Step 5 加「⚠️ 不可跳过」标注；所有文件添加版本标记 |
 > | v2.0 → v2.1.0 | 新增 `templates/.cursor/rules/ai-coding-ok.mdc`（Cursor 支持）；所有版本标记 v2.0 → v2.1.0 |
+> | v2.1.0 → v2.2.0 | 新增 `templates/CLAUDE.md`（Claude Code 自动加载 shim → @AGENTS.md）；SKILL.md description 重写（仅框架层，不影响项目文件）；所有版本标记 v2.1.0 → v2.2.0 |
 >
-> 跨多个版本时按顺序逐级应用（如 v1.0 → v2.0 → v2.1.0）。
+> 跨多个版本时按顺序逐级应用（如 v1.0 → v2.0 → v2.1.0 → v2.2.0）。
 
 ### Step 4 — 请求用户确认
 

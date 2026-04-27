@@ -1,4 +1,4 @@
-<!-- ai-coding-ok: v2.1.0 -->
+<!-- ai-coding-ok: v2.2.0 -->
 <!-- ⛔ MANDATORY: AI Agent MUST execute these steps for EVERY request -->
 
 ## ⚠️ 强制执行：PDCA 工作流

@@ -12,6 +12,84 @@
 
 ---
 
+## 升级 Prompt — v2.1.0 → v2.2.0
+
+将以下内容复制到 Copilot Chat 或 Cursor Agent：
+
+```
+请帮我将项目的 ai-coding-ok 框架从 v2.1.0 升级到 v2.2.0。按以下步骤执行：
+
+## Step 1 — 检测当前版本
+
+读取以下文件的第一行，检查版本标记 `<!-- ai-coding-ok: vX.Y.Z -->` 或 `# ai-coding-ok: vX.Y.Z`：
+- AGENTS.md
+- .github/copilot-instructions.md
+- .github/agent/system-prompt.md
+- .github/agent/coding-standards.md
+- .github/agent/workflows.md
+- .github/agent/prompt-templates.md
+- .github/project-metadata.yml
+- .github/workflows/ci.yml
+- .cursor/rules/ai-coding-ok.mdc
+
+报告检测结果。如果当前不是 v2.1.0，请先按对应路径升级到 v2.1.0。
+
+## Step 2 — 执行升级（v2.1.0 → v2.2.0 变更清单）
+
+### 2a. 新增项目根 CLAUDE.md（Claude Code 自动加载 shim）
+
+在项目根新建文件 `CLAUDE.md`：
+
+```markdown
+<!-- ai-coding-ok: v2.2.0 -->
+# CLAUDE.md
+
+> Claude Code 自动加载本文件。它通过 `@` 语法导入项目级 AGENTS.md，
+> 让 ai-coding-ok 的 PDCA 强制指令在每个会话开始时无条件生效。
+
+@AGENTS.md
+```
+
+> 💡 即使你主用 Copilot / Cursor，加上这个文件也无害——它只在 Claude Code 中起作用，对其他工具不可见。
+
+### 2b. 更新版本标记
+
+将以下文件第一行的版本标记从 `v2.1.0` 更新为 `v2.2.0`：
+- AGENTS.md
+- .github/copilot-instructions.md
+- .github/agent/system-prompt.md
+- .github/agent/coding-standards.md
+- .github/agent/workflows.md
+- .github/agent/prompt-templates.md
+- .github/project-metadata.yml（注释格式 `# ai-coding-ok: ...`）
+- .github/workflows/ci.yml（同上）
+- .cursor/rules/ai-coding-ok.mdc
+
+## Step 3 — 验证
+
+1. 项目根存在 CLAUDE.md 且内容含 `@AGENTS.md`
+2. 所有版本标记已更新到 v2.2.0
+3. 项目特有内容（项目名称、技术栈、架构图等）未被改动
+4. 没有遗留 `{{占位符}}`
+
+## Step 4 — 记录升级
+
+在 `.github/agent/memory/task-history.md` 追加：
+
+```markdown
+### [TASK-00N] 升级 ai-coding-ok 至 v2.2.0
+- **日期**：{今天日期}
+- **类型**：chore
+- **摘要**：升级 ai-coding-ok 至 v2.2.0；新增 CLAUDE.md（Claude Code 自动加载 shim → @AGENTS.md）；更新所有版本标记
+- **变更文件**：CLAUDE.md（新增），AGENTS.md 等 9 个文件（版本标记）
+- **注意事项**：框架升级，记忆文件未变动
+```
+
+请按上述步骤执行升级，完成后输出变更摘要。
+```
+
+---
+
 ## 升级 Prompt — v2.0 → v2.1.0
 
 将以下内容复制到 Copilot Chat 或 Cursor Agent：
