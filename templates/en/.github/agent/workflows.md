@@ -1,4 +1,4 @@
-<!-- ai-coding-ok: v3.0.0 -->
+<!-- ai-coding-ok: v3.1.0 -->
 # 🔄 {{project-name}} — Agent Workflow Guide
 
 > Defines the standard workflow for the AI agent in different scenarios.

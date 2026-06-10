@@ -182,6 +182,12 @@ install_copilot() {
 
   log "Templates installed."
   log "Next: paste scripts/customize-prompt.md into Copilot Chat to fill in placeholders."
+	  if [[ -d "$dest/.claude" ]]; then
+	    log "Claude Code hooks template installed. If using AI install, placeholders will be auto-filled."
+	    log "  If installing manually, edit .claude/settings.local.json and replace {{SOURCE_DIR_PATTERN}}."
+	    log "  Example pattern: '^src/\\|^tests/' matches changes in src/ and tests/."
+	    log "  WARNING: If you have settings.json, merge hooks into settings.local.json to avoid conflicts."
+	  fi
 }
 
 install_cursor() {

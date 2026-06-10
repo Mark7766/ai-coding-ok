@@ -1,5 +1,5 @@
 <!-- ai-coding-ok: v3.1.0 -->
-# 📏 {{项目名称}} — 编码规范
+# 📏 ai-coding-ok — 编码规范
 
 > 所有人类和 AI 提交的代码都应遵守本文件中的规范。
 
@@ -17,8 +17,8 @@ import logging
 from datetime import datetime
 from pathlib import Path
 
-# 第三方库
-from {{framework}} import {{imports}}
+# 第三方库（本项目零外部依赖，以下为示例）
+# 如有需要，from typing import Any, Optional
 
 # 项目内部
 from src.config import settings

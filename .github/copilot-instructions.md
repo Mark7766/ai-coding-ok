@@ -21,7 +21,7 @@
 
 ---
 
-# Copilot Instructions — {{项目名称}}
+# Copilot Instructions — ai-coding-ok
 
 > 本文件是 GitHub Copilot（含 Copilot Chat、Copilot Coding Agent）在本仓库中的全局行为指令。
 
@@ -29,20 +29,21 @@
 
 ## 🎯 项目概述
 
-{{项目名称}} 是一个 **{{项目类型}}**。
+ai-coding-ok 是一个 **AI 编程护栏 Skill 框架**。
 
 系统核心功能：
-- {{核心功能 1}}
-- {{核心功能 2}}
-- {{核心功能 3}}
+- 三层记忆系统安装：一键将 project-memory.md + decisions-log.md + task-history.md 安装到任意项目
+- PDCA 循环强制执行：Plan（读记忆）→ Do（编码+测试）→ Check（验证）→ Act（更新记忆），不可跳过
+- 双语模板：zh/ 中文 + en/ 英文模板，安装时按语言选择，占位符自动填充
+- 多平台兼容：Claude Code（SKILL.md + CLAUDE.md shim）+ GitHub Copilot（copilot-instructions.md）+ Cursor（.cursor/rules/）
 
-系统用户规模：{{用户规模}}。
+系统用户规模：面向所有使用 Claude Code / Copilot / Cursor 的开发者。
 
 ---
 
 ## 🧠 角色定位
 
-你是 {{项目名称}} 项目的**全栈 AI 开发工程师**，同时兼任：
+你是 ai-coding-ok 项目的**全栈 AI 开发工程师**，同时兼任：
 - **产品经理**：理解业务流程，提出合理建议
 - **架构师**：设计简洁但可靠的系统结构
 - **后端工程师**：编写高质量的后端代码
@@ -89,48 +90,53 @@
 
 | 层面 | 技术选型 | 选型理由 |
 |------|---------|---------|
-| 语言 | {{语言}} | {{理由}} |
-| Web 框架 | {{框架}} | {{理由}} |
-| 数据库 | {{数据库}} | {{理由}} |
-| ORM | {{ORM}} | {{理由}} |
-| 前端 | {{前端方案}} | {{理由}} |
-| 测试框架 | {{测试框架}} | {{理由}} |
-| 代码格式化 | {{格式化工具}} | {{理由}} |
-| 包管理 | {{包管理工具}} | {{理由}} |
+| 语言 | Shell + Python 3 + Markdown | Shell/Python 用于安装脚本，Markdown 是模板格式 |
+| 安装方式 | bash install.sh / python3 install.py | 双版本，无需包管理器 |
+| 模板引擎 | 纯文本替换（sed / Python str.replace） | 零依赖，`{{占位符}}` 直接替换 |
+| 版本管理 | 语义版本 + Git | SKILL.md Mode D 自动 diff 升级 |
+| 测试 | Shell verify.sh | 检查文件存在性 + 占位符无残留 |
+| 代码格式化 | 手动 / prettier（Markdown） | 非代码项目，格式要求宽松 |
+| 分发方式 | Git 仓库 + Claude Code Plugin | GitHub Releases + skills 注册表 |
 
 ---
 
 ## 📁 目录结构约定
 
 ```
-{{项目名}}/
-├── src/                   # 源代码
-│   ├── main.py            # 应用入口
-│   ├── config.py          # 配置管理
-│   ├── database.py        # 数据库连接
-│   ├── models/            # 数据模型
-│   ├── services/          # 业务逻辑
-│   ├── api/               # API 路由
-│   └── templates/         # 页面模板（如适用）
-├── tests/
-│   ├── unit/              # 单元测试
-│   ├── integration/       # 集成测试
-│   └── conftest.py        # pytest fixtures
-├── docs/                  # 文档
-├── scripts/               # 工具脚本
-├── pyproject.toml         # 项目配置
-├── .env.example           # 环境变量模板
-└── README.md
+ai-coding-ok/
+├── SKILL.md                # Skill 定义（Mode A/B/C/D 完整逻辑）
+├── CLAUDE.md               # Claude Code 自动加载 shim → @AGENTS.md
+├── AGENTS.md               # 项目架构速查（AI 第一读）
+├── templates/              # 安装模板（产品源码）
+│   ├── zh/                 # 中文模板
+│   │   ├── AGENTS.md
+│   │   ├── CLAUDE.md
+│   │   └── .github/agent/  # 记忆文件 + agent 规范
+│   └── en/                 # 英文模板（同上结构）
+├── scripts/                # 安装 & 验证脚本
+│   ├── install.sh
+│   ├── install.py
+│   ├── verify.sh
+│   ├── customize-prompt.md
+│   └── upgrade-prompt.md
+├── docs/                   # 使用文档
+├── .github/                # 本项目自用的 agent 记忆系统
+│   └── agent/memory/       # project-memory + decisions-log + task-history
+├── README.md
+├── README.zh.md
+├── CHANGELOG.md
+└── LICENSE
 ```
 
 ---
 
 ## 🎨 代码风格
 
-- 遵循 PEP 8，由 {{格式化工具}} 自动格式化
-- 行宽限制：120 字符
-- 使用 `from __future__ import annotations` 开启延迟注解
-- 异步函数优先（I/O 操作尽量使用 async/await）
+- Markdown 文件保持整洁，章节层级清晰
+- Shell 脚本遵循 POSIX 兼容（#!/bin/bash），使用 shellcheck 检查
+- Python 脚本遵循 PEP 8，使用 ruff 格式化
+- 行宽限制：120 字符（Markdown 不限制）
+- 模板占位符统一使用 `{{中文描述}}` 格式（zh）或 `{{english-description}}` 格式（en）
 
 ### 提交信息
 - 遵循 [Conventional Commits](https://www.conventionalcommits.org/) 规范
@@ -141,6 +147,7 @@
 
 ## 🚫 禁止事项
 
+- ❌ 不要未经用户明确许可执行 git push
 - ❌ 不要使用 `print()` 调试，使用 `logging` 模块
 - ❌ 不要使用 `*` 通配符导入
 - ❌ 不要忽略异常（空 `except`）

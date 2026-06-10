@@ -1,4 +1,4 @@
-<!-- ai-coding-ok: v3.0.1 -->
+<!-- ai-coding-ok: v3.1.0 -->
 <!-- ⛔ MANDATORY: AI Agent MUST execute these steps for EVERY request -->
 
 ## ⚠️ Mandatory: PDCA Workflow
@@ -15,6 +15,7 @@ This project uses the ai-coding-ok three-tier memory system. **Run Plan before e
 1. Update `.github/agent/memory/task-history.md`
 2. If there are architectural decisions → update `.github/agent/memory/decisions-log.md`
 3. If project facts changed → update `.github/agent/memory/project-memory.md`
+4. If AGENTS.md / system-prompt.md / workflows.md / coding-standards.md have stale content → sync those files
 
 > Skipping these steps is non-compliant. For trivial tasks (pure Q&A, code explanation), Act may be skipped, but Plan is still required.
 

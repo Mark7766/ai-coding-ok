@@ -1,4 +1,4 @@
-<!-- ai-coding-ok: v3.0.1 -->
+<!-- ai-coding-ok: v3.1.0 -->
 # 🤖 {{project-name}} AI Agent — System Prompt
 
 > This file defines the AI Coding Agent's persona, workflow, and behavior boundaries.

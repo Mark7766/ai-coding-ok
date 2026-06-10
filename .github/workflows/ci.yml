@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  # {{修改为你的语言版本}}
+  # ai-coding-ok 使用 Shell + Python，无需特定语言版本
   LANGUAGE_VERSION: "3.12"
 
 jobs:
@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # {{根据你的语言和包管理工具修改以下步骤}}
+      # ai-coding-ok 非代码项目，CI 仅做 install/verify 完整性检查
       - name: Set up environment
         run: echo "TODO: set up language and dependencies"
 
@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [lint, type-check]
     env:
-      # {{配置测试环境变量}}
+      # ai-coding-ok 无数据库，无需配置测试环境变量
       DATABASE_URL: "sqlite:///test.db"
       DEBUG: "true"
     steps:

@@ -1,4 +1,4 @@
-<!-- ai-coding-ok: v3.0.0 -->
+<!-- ai-coding-ok: v3.1.0 -->
 # 🧩 {{project-name}} — Prompt Template Library
 
 > Standard prompt templates the AI agent uses in different scenarios.

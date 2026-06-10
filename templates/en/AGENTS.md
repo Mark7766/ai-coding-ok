@@ -1,4 +1,4 @@
-<!-- ai-coding-ok: v3.0.0 -->
+<!-- ai-coding-ok: v3.1.0 -->
 # AGENTS.md — {{project-name}}
 
 ## ⚠️ AI Agent Mandatory Spec (run on every task)
@@ -6,14 +6,19 @@
 This project uses the [ai-coding-ok](https://github.com/Mark7766/ai-coding-ok) three-tier memory system. **You MUST complete the steps below before doing any task work:**
 
 ### Plan Phase (mandatory, before starting the task)
-1. Read `.github/agent/memory/project-memory.md` — project facts and architectural constraints
-2. Read `.github/agent/memory/decisions-log.md` — historical technical decisions
-3. Read `.github/agent/memory/task-history.md` — recent task context
+1. Read `AGENTS.md` — this file, architecture quick reference
+2. Read `.github/agent/system-prompt.md` — Agent persona, role switching, behavior boundaries
+3. Read `.github/agent/workflows.md` — scenario workflows (Feature/Bug/Refactor/Deploy)
+4. Read `.github/agent/coding-standards.md` — coding standards
+5. Read `.github/agent/memory/project-memory.md` — project facts and architectural constraints
+6. Read `.github/agent/memory/decisions-log.md` — historical technical decisions
+7. Read `.github/agent/memory/task-history.md` — recent task context
 
 ### Act Phase (mandatory, after finishing the task)
 1. Update `.github/agent/memory/task-history.md` — record a summary of this task
 2. If architectural decisions changed → update `.github/agent/memory/decisions-log.md`
 3. If project facts changed → update `.github/agent/memory/project-memory.md`
+4. If AGENTS.md / system-prompt.md / workflows.md / coding-standards.md have stale content → sync those files
 
 > ⛔ These steps are not optional. If you are using superpowers brainstorming / writing-plans,
 > complete the Plan phase **before** calling those skills, and the Act phase **after** they finish.

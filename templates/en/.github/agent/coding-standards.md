@@ -1,4 +1,4 @@
-<!-- ai-coding-ok: v3.0.0 -->
+<!-- ai-coding-ok: v3.1.0 -->
 # 📏 {{project-name}} — Coding Standards
 
 > All code submitted by humans or AI must follow the standards in this document.

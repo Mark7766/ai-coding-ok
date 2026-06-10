@@ -164,6 +164,32 @@ Do NOT ask the user to fill in placeholders manually. Instead, ask a single plai
 
 (Chinese: "一句话告诉我你想做一个什么东西？")
 
+### Step 5.5 — Ask about source directories (for Stop hook)
+
+Ask the user:
+
+> "Where does your source code live? (e.g. `src/`, `lib/`, `app/` — space-separated, default: `src/ tests/`)"
+
+(Chinese: "你的项目源码目录是什么？（如 `src/`、`lib/`，空格分隔多个，默认：`src/ tests/`）")
+
+Convert the answer to a grep-compatible regex pattern. Examples:
+- `src/ tests/` → `^src/\\|^tests/`
+- `src/` → `^src/`
+- `lib/ app/` → `^lib/\\|^app/`
+
+### Step 5.6 — Configure Claude Code hooks
+
+Check if `.claude/` directory exists in the project (indicating the user uses Claude Code):
+
+- If `.claude/` exists, configure the Stop hook's `{{SOURCE_DIR_PATTERN}}` in `.claude/settings.local.json`:
+  - Read the file
+  - Replace `{{SOURCE_DIR_PATTERN}}` with the regex pattern from Step 5.5
+  - If the file already has a `hooks` section (from a prior install or user config), merge: only add hooks that don't already exist
+  - If the file doesn't exist, copy the template from `<plugin-root>/templates/<lang>/.claude/settings.local.json` and fill the pattern
+  - ⚠️ CRITICAL: Never overwrite a user's existing `.claude/settings.local.json` without permission. If the file has user-authored content outside the ai-coding-ok hooks, preserve all of it and only add/replace the ai-coding-ok hook entries.
+  - ⚠️ CRITICAL: If the project has BOTH `settings.json` AND `settings.local.json`, hooks in `settings.json` will conflict with `settings.local.json`. Warn the user and recommend merging into `settings.local.json` only.
+- If `.claude/` does NOT exist, skip hooks configuration (user may be using Copilot/Cursor only).
+
 ### Step 6 — Infer and replace placeholders
 
 Based on the user's sentence, infer:
@@ -177,7 +203,7 @@ Based on the user's sentence, infer:
 Then walk every copied file and replace every `{{...}}` placeholder with the inferred value. Files to process:
 
 - `AGENTS.md`
-- `CLAUDE.md` (Claude Code shim — typically just `@AGENTS.md`, no placeholder, but verify)
+- `CLAUDE.md`
 - `.github/copilot-instructions.md`
 - `.github/project-metadata.yml`
 - `.github/ISSUE_TEMPLATE/config.yml`
@@ -190,6 +216,7 @@ Then walk every copied file and replace every `{{...}}` placeholder with the inf
 - `.github/agent/memory/project-memory.md`
 - `.github/agent/memory/decisions-log.md`
 - `.github/agent/memory/task-history.md`
+- `.claude/settings.local.json` (replace `{{SOURCE_DIR_PATTERN}}` with the pattern from Step 5.5)
 
 For `{{YYYY-MM-DD}}` placeholders use today's date.
 
