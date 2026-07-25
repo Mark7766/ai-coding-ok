@@ -46,3 +46,30 @@
 - **变更文件**：全部 41 个文件（22 modified + 18 new + 1 new doc）
 - **注意事项**：push 前确认 project-memory.md 约束1（push 需用户明确许可）合规。后续开发者将基于此 commit 继续工作。
 
+---
+
+### [TASK-004] 编写中文化回归方案
+- **日期**：2026-07-25
+- **类型**：docs
+- **摘要**：响应 wangliang 的要求，编写「ai-coding-ok 中文化回归方案」。第一版为"中英文优先"，经 wangliang 反馈后修改为"彻底删除英文支持"：删除 templates/en/ 全部 19 个文件、删除 README.zh.md、SKILL.md 全文中文化（保留 PDCA/ADR/hook 等技术术语和代码块）、install.sh 删除语言选择逻辑、README.md 改为中文。v3.0.0 以来的全部能力（五层防御、hooks、Install/Upgrade Playbook、dogfooding）保留。版本 v3.1.0 → v4.0.0。
+- **变更文件**：docs/chinese-first-migration-plan.md（新建，二版修改）
+- **注意事项**：方案已获 wangliang 确认方向。待确认后进入实施。ADR-005 和 ADR-001 状态更新待实施时写入。
+
+---
+
+### [TASK-005] 实施 v4.0.0 中文化回归
+- **日期**：2026-07-25
+- **类型**：feat
+- **摘要**：按 docs/chinese-first-migration-plan.md 方案执行全部六个阶段的改造。阶段一：删除 templates/en/（19 个文件）和 README.zh.md。阶段二：SKILL.md 全文中文化（保留 PDCA/ADR/hook/template 等技术术语和代码块），删除 Language detection 章节，同步 skills/ai-coding-ok/SKILL.md。阶段三：README.md 改为中文，CHANGELOG.md 中文化并新增 v4.0.0 条目。阶段四：install.sh/install.py 中文化并删除 --lang 选项硬编码 templates/zh/，scripts/verify.sh/output/customize-prompt.md/upgrade-prompt.md 全部中文化。阶段五：AGENTS.md 约束更新、decisions-log.md 新增 ADR-005 + ADR-001 标为已替代、project-memory.md 更新、plugin.json 改中文。阶段六：全部版本标记 v3.1.0 → v4.0.0。
+- **变更文件**：SKILL.md（重写）、skills/ai-coding-ok/SKILL.md（同步）、README.md（重写）、CHANGELOG.md（重写+新增 v4.0.0）、install.sh（中文化+删除--lang）、install.py（同上）、scripts/verify.sh（中文化）、scripts/customize-prompt.md（中文化）、scripts/upgrade-prompt.md（中文化+新增 v3.x→v4.0.0 路径）、.claude-plugin/plugin.json（中文 description+版本）、AGENTS.md（约束更新）、templates/zh/AGENTS.md（约束更新）、decisions-log.md（ADR-005+ADR-001 状态）、project-memory.md（主语言+架构）、task-history.md（TASK-005）、templates/en/（删除 19 个文件）、README.zh.md（删除）、全部文件版本标记
+- **注意事项**：v4.0.0 Breaking Change——不再强制双语同步。v3.0.0 以来全部能力（五层防御、四重 hooks、Mode B/C/D、Install/Upgrade Playbook、dogfooding）完整保留。SKILL.md 技术术语保留英文以确保 AI 工具理解。待进入阶段六（版本标记更新）。
+
+---
+
+### [TASK-006] v4.1.0 新增 Codex 支持
+- **日期**：2026-07-25
+- **类型**：feat
+- **摘要**：新增 OpenAI Codex CLI 支持。Codex 原生加载 AGENTS.md，ai-coding-ok 的 PDCA 强制指令天然兼容。新增 templates/zh/.codex/skills/ai-coding-ok/ 目录（SKILL.md + verification.md）作为 Codex skill 定义。install.sh/install.py 新增 --codex 安装模式（交互菜单第 5 项）。SKILL.md/AGENTS.md/README.md 全部更新添加 Codex 文档。新增 ADR-006。版本 v4.0.0 → v4.1.0。五平台覆盖：Claude Code + Copilot + Cursor + OpenCode + Codex。
+- **变更文件**：templates/zh/.codex/skills/ai-coding-ok/SKILL.md（新）、templates/zh/.codex/skills/ai-coding-ok/verification.md（新）、SKILL.md（compatibility+Codex章节+架构图）、skills/ai-coding-ok/SKILL.md（同步）、AGENTS.md（跨平台层）、README.md（安装章节+架构图）、install.sh（--codex模式+菜单）、install.py（--codex模式+菜单）、CHANGELOG.md（v4.1.0条目）、decisions-log.md（ADR-006）、project-memory.md（版本更新）、task-history.md（TASK-006）、.claude-plugin/plugin.json（版本）、全部文件版本标记 v4.0.0→v4.1.0
+- **注意事项**：Codex 与 OpenCode 共享 AGENTS.md 加载机制。Codex 的 ~/.codex/memories/ 自动记忆系统与 ai-coding-ok 三层记忆互补不冲突。Codex 使用 TOML 配置格式（~/.codex/config.toml 或 .codex/config.toml），与 Claude Code 的 JSON 配置不同。
+

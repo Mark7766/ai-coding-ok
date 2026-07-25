@@ -1,4 +1,4 @@
-<!-- ai-coding-ok: v3.1.0 -->
+<!-- ai-coding-ok: v4.1.0 -->
 # AGENTS.md — ai-coding-ok
 
 ## ⚠️ AI Agent 必读规范（每次任务必须执行）
@@ -46,10 +46,11 @@ CLAUDE.md (@AGENTS.md) ──→ AGENTS.md (PDCA 强制指令)
   Claude Code  → SKILL.md (Mode A/B/C/D) + CLAUDE.md shim
   Copilot      → .github/copilot-instructions.md (自动加载)
   Cursor       → .cursor/rules/ai-coding-ok.mdc
+  Codex        → AGENTS.md (自动加载) + .codex/skills/ai-coding-ok/ (skill)
 ```
 
 - **`SKILL.md`** — Skill 定义文件，包含 Mode A(Install) / B(Plan) / C(Act) / D(Upgrade) 完整逻辑
-- **`templates/zh/` `templates/en/`** — 双语安装模板（AGENTS.md + 三层记忆文件 + agent 规范），安装时自动替换占位符
+- **`templates/zh/`** — 中文安装模板（AGENTS.md + 三层记忆文件 + agent 规范），安装时自动替换占位符。v4.1.0 起为唯一模板源
 - **`scripts/`** — install.sh / install.py 自动化安装脚本 + verify.sh 安装验证 + customize-prompt.md / upgrade-prompt.md 手动触发提示
 
 ## 常用命令
@@ -69,10 +70,10 @@ find . -type f -not -path './.git/*' | sort
 
 ## 约定与模式
 
-- **模板优先** — 所有安装文件来源于 `templates/zh/` 或 `templates/en/`，修改行为应先在模板中完成
+- **模板优先** — 所有安装文件来源于 `templates/zh/`，修改行为应先在模板中完成
 - **占位符替换** — 模板中 `{{占位符}}` 由安装流程（SKILL.md Mode A Step 5-6）自动填充，不可手动填
 - **版本标记** — 每个已安装文件第一行含 `<!-- ai-coding-ok: vX.Y -->`，Upgrade 模式依赖此标记
-- **双语维护** — zh/ 和 en/ 模板必须同步更新，不可只改一个语言
+- **中文项目** — 模板仅在 `templates/zh/` 中维护，`templates/en/` 已删除。不再要求双语同步
 - **非代码项目** — 本工程以 Markdown + Shell + Python 为主，无 Web 框架、无数据库、无前端
 - **SKILL.md 是入口** — 所有行为定义在 SKILL.md 中，AGENTS.md / copilot-instructions.md 是项目级指令
 

@@ -1,7 +1,7 @@
 {
   "name": "ai-coding-ok",
-  "description": "PDCA memory loop for Claude Code. Reads three-tier project memory (project-memory, decisions-log, task-history) before every task and writes back after, so iteration 50 has the same context quality as iteration 1. Pairs with superpowers — discipline + memory.",
-  "version": "3.0.0",
+  "description": "Claude Code 的 PDCA 记忆闭环。每次任务前读取三层项目记忆（project-memory、decisions-log、task-history），任务后写回更新，让第 50 次迭代和第 1 次迭代拥有同样的 context 质量。与 superpowers 搭配使用——纪律 + 记忆。",
+  "version": "4.1.0",
   "author": {
     "name": "Mark7766",
     "email": "wangliang540541@gmail.com"

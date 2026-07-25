@@ -12,6 +12,83 @@
 
 ---
 
+## 升级 Prompt — v3.x → v4.0.0
+
+将以下内容复制到 Copilot Chat 或 Cursor Agent：
+
+```
+请帮我将项目的 ai-coding-ok 框架从 v3.x 升级到 v4.0.0。按以下步骤执行：
+
+## Step 1 — 检测当前版本
+
+读取以下文件的第一行，检查版本标记 `<!-- ai-coding-ok: vX.Y -->` 或 `# ai-coding-ok: vX.Y`：
+- AGENTS.md
+- .github/copilot-instructions.md
+- .github/agent/system-prompt.md
+- .github/agent/coding-standards.md
+- .github/agent/workflows.md
+- .github/agent/prompt-templates.md
+- .github/project-metadata.yml
+- .github/workflows/ci.yml
+- .cursor/rules/ai-coding-ok.mdc
+
+报告检测结果。
+
+## Step 2 — 执行升级（v3.x → v4.0.0 变更清单）
+
+### 2a. 更新 AGENTS.md 中的约束描述
+
+在 AGENTS.md 的「约定与模式」章节中，将：
+```
+- **双语维护** — zh/ 和 en/ 模板必须同步更新，不可只改一个语言
+```
+改为：
+```
+- **中文项目** — 模板仅在 `templates/zh/` 中维护，`templates/en/` 已删除
+```
+
+### 2b. 更新版本标记
+
+将以下文件第一行的版本标记更新为 `v4.0.0`：
+- AGENTS.md
+- CLAUDE.md
+- .github/copilot-instructions.md
+- .github/agent/system-prompt.md
+- .github/agent/coding-standards.md
+- .github/agent/workflows.md
+- .github/agent/prompt-templates.md
+- .github/project-metadata.yml
+- .github/workflows/ci.yml
+- .cursor/rules/ai-coding-ok.mdc
+
+### 2c. 如存在 templates/en/ 目录，可安全删除
+
+v4.0.0 不再维护英文模板。如果你的项目中有 `templates/en/` 目录（来自旧版安装），可以安全删除。
+
+## Step 3 — 验证
+
+1. 确认所有文件的版本标记已更新到 v4.0.0
+2. 确认项目特有内容（项目名称、技术栈、架构图等）未被改动
+3. 确认没有遗留的 `{{占位符}}`
+
+## Step 4 — 记录升级
+
+在 `.github/agent/memory/task-history.md` 追加：
+
+```markdown
+### [TASK-00N] 升级 ai-coding-ok 至 v4.0.0
+- **日期**：{今天日期}
+- **类型**：chore
+- **摘要**：升级 ai-coding-ok 至 v4.0.0；删除英文模板支持，回归纯中文项目；更新所有版本标记和约束描述
+- **变更文件**：AGENTS.md 等（版本标记 + 约束描述）
+- **注意事项**：v4.0.0 为纯中文项目，templates/en/ 不再维护。所有 v3.x 能力（五层防御、hooks、Mode B/C/D）保留
+```
+
+请按上述步骤执行升级，完成后输出变更摘要。
+```
+
+---
+
 ## 升级 Prompt — v2.1.0 → v2.2.0
 
 将以下内容复制到 Copilot Chat 或 Cursor Agent：

@@ -1,4 +1,4 @@
-<!-- ai-coding-ok: v3.1.0 -->
+<!-- ai-coding-ok: v4.1.0 -->
 # 🧩 ai-coding-ok — Prompt 模板库
 
 > AI Agent 在不同场景下使用的标准 Prompt 模板。

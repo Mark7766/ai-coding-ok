@@ -43,7 +43,7 @@
 ### ADR-001: 选用双语模板架构（zh/ + en/）
 
 - **日期**：2026-04-19
-- **状态**：✅ 已采纳
+- **状态**：🔄 已替代（被 ADR-005 替代）
 - **决策者**：wangliang
 
 #### 背景
@@ -145,3 +145,75 @@
 
 #### 影响
 > 根目录新增 AGENTS.md、CLAUDE.md、.github/agent/memory/*.md 等文件。这些文件属于"已安装"层，描述 ai-coding-ok 自身的开发过程，不参与模板分发。
+
+---
+
+### ADR-005: 中文化回归——删除英文支持，回归纯中文项目
+
+- **日期**：2026-07-25
+- **状态**：✅ 已采纳
+- **决策者**：wangliang
+
+#### 背景
+> ADR-001 选择了双语模板架构（zh/ + en/）以争取成为 Claude 官方 Skill。官方 Skill 路线已不可行。当前用户全部为中国开发者，双语维护无实际价值——每次改模板要同步 19×2=38 个文件，英文模板实际使用率为零。
+
+#### 方案对比
+
+| 方案 | 优点 | 缺点 |
+|------|------|------|
+| A: 保留 en/ 降级标注 | 国际用户可参考 | 仍需维护两套目录结构 |
+| B: 彻底删除 en/，回退到纯中文 | 维护成本最低，目录简洁，回到 v3.0.0 之前的状态 | 国际用户需自行翻译 |
+
+#### 决策
+> 选择方案 B：**彻底删除 `templates/en/`，回到 v3.0.0 之前的纯中文项目状态**。同时保留 v3.0.0 以来全部能力改进（五层防御、hooks、Mode B/C/D、Install/Upgrade Playbook、dogfooding）。
+
+#### 理由
+> 目标用户是中国开发者，英文模板实际使用率为零。保留不维护的英文模板比删除更差——用户用了过时模板会遇到问题。v3.0.0 以来的能力改进全部保留，仅去掉双语支持。SKILL.md 中的技术术语（PDCA/ADR/hook/template 等）保留英文，方便 AI 编程工具理解。
+
+#### 影响
+> - `templates/en/` 目录删除（19 个文件）
+> - `README.zh.md` 删除（内容合并到 `README.md`）
+> - SKILL.md 全文改中文（技术术语保留英文）
+> - README.md 改为中文
+> - install.sh/install.py 删除 `--lang` 选项，硬编码 `templates/zh/`
+> - CHANGELOG.md 中文化
+> - scripts/ 下所有脚本中文化
+> - AGENTS.md "双语维护"约束改为"中文项目"
+> - ADR-001 标记为已替代
+> - 版本号 v3.1.0 → v4.0.0
+
+---
+
+### ADR-006: 新增 Codex（OpenAI Codex CLI）支持
+
+- **日期**：2026-07-25
+- **状态**：✅ 已采纳
+- **决策者**：wangliang
+
+#### 背景
+> OpenAI Codex CLI 已成为主要的 AI 编程工具之一。ai-coding-ok 已覆盖 Claude Code、Copilot、Cursor、OpenCode 四个平台，需要评估是否以及如何支持 Codex。
+
+#### 关键发现
+> Codex CLI 原生加载项目根目录的 `AGENTS.md`（与 OpenCode 相同），ai-coding-ok 安装的 AGENTS.md 中的 PDCA 强制指令天然生效。Codex 还支持 `.codex/skills/<name>/SKILL.md` skill 系统和 TOML 格式的 `config.toml` 配置。
+
+#### 方案对比
+
+| 方案 | 优点 | 缺点 |
+|------|------|------|
+| A: 仅依赖 AGENTS.md 自动加载 | 零额外工作 | 无 skill 触发入口，安装/升级需手动 |
+| B: AGENTS.md + .codex/skills/ Skill 文件 | 完整 skill 体验，覆盖安装/升级/PDCA 全流程 | 需新增模板文件和安装模式 |
+
+#### 决策
+> 选择方案 B：**AGENTS.md 自动加载 + `.codex/skills/ai-coding-ok/` skill 文件**。
+
+#### 理由
+> AGENTS.md 已经提供 PDCA 强制指令（Plan：读记忆 → Do：编码 → Check：验证 → Act：写回记忆），Codex 自动加载后即可生效。额外添加 `.codex/skills/` 是为了让 Codex 用户可以通过 skill 系统触发安装（Mode A）和升级（Mode D）操作。Codex 的 `~/.codex/memories/` 自动记忆系统与 ai-coding-ok 的三层记忆是互补关系，不冲突。
+
+#### 影响
+> - 新增 `templates/zh/.codex/skills/ai-coding-ok/SKILL.md`（Codex skill 定义 + PDCA 工作流）
+> - 新增 `templates/zh/.codex/skills/ai-coding-ok/verification.md`（任务验证清单）
+> - install.sh/install.py 新增 `--codex` 模式
+> - SKILL.md compatibility 新增 `codex`
+> - AGENTS.md 跨平台兼容层新增 Codex
+> - README 新增 Codex 安装说明
+> - 版本号 v4.0.0 → v4.1.0
