@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ai-coding-ok 安装脚本
-# 适用于 Claude Code、GitHub Copilot、OpenCode、Cursor 和 Codex 用户。
+# 适用于 Claude Code、GitHub Copilot、OpenCode、Cursor、Codex 和 AtomCode 用户。
 #
 # 用法：
 #   bash install.sh                          # 交互式
@@ -9,6 +9,7 @@
 #   bash install.sh --copilot                # 将模板复制到当前目录
 #   bash install.sh --cursor                 # 将模板 + .cursor/rules/ 复制到当前目录
 #   bash install.sh --codex                  # 将模板 + .codex/skills/ 复制到当前目录
+#   bash install.sh --atomcode               # 将模板复制到当前目录（AtomCode 自动加载 AGENTS.md）
 #   bash install.sh --copilot --target /path/to/project
 #   bash install.sh --cursor  --target /path/to/project
 #   bash install.sh --codex   --target /path/to/project
@@ -42,6 +43,7 @@ while [[ $# -gt 0 ]]; do
     --copilot)              MODE="copilot" ;;
     --cursor)               MODE="cursor" ;;
     --codex)                MODE="codex" ;;
+    --atomcode)             MODE="atomcode" ;;
     --target)               TARGET="$2"; shift ;;
     --force|-f)             FORCE="1" ;;
     --dry-run|-n)           DRY_RUN="1" ;;
@@ -69,8 +71,9 @@ if [[ -z "$MODE" ]]; then
   echo "  3) GitHub Copilot     — 将模板复制到项目目录"
   echo "  4) Cursor             — 将模板 + .cursor/rules/ 复制到项目目录"
   echo "  5) Codex              — 将模板 + .codex/skills/ 复制到项目目录"
+  echo "  7) AtomCode           — 将模板复制到项目目录（自动加载 AGENTS.md）"
   echo "  6) Claude Code + OpenCode（推荐 agentic CLI 用户）"
-  printf "选项 [1/2/3/4/5/6]："
+  printf "选项 [1/2/3/4/5/6/7]："
   read -r choice
   case "$choice" in
     1) MODE="claude"   ;;
@@ -78,6 +81,7 @@ if [[ -z "$MODE" ]]; then
     3) MODE="copilot"  ;;
     4) MODE="cursor"   ;;
     5) MODE="codex"    ;;
+    7) MODE="atomcode" ;;
     6) MODE="both"     ;;
     *) die "无效选项" 1 ;;
   esac
@@ -239,12 +243,46 @@ install_codex() {
   log "在任意项目中启动 Codex，然后说：安装 ai-coding-ok，我想做一个xxx"
 }
 
+install_atomcode() {
+  local dest="${TARGET:-$(pwd)}"
+  dest="$(cd "$dest" && pwd)"
+  log "安装 AtomCode 模板 -> $dest"
+
+  # AtomCode 原生加载项目根目录的 AGENTS.md，PDCA 指令安装即生效
+  local conflicts=()
+  for f in AGENTS.md CLAUDE.md .github/agent; do
+    [[ -e "$dest/$f" ]] && conflicts+=("$f")
+  done
+  if [[ ${#conflicts[@]} -gt 0 && "$FORCE" != "1" ]]; then
+    echo "[ai-coding-ok] 错误：$dest 中存在冲突文件：" >&2
+    printf '  - %s\n' "${conflicts[@]}" >&2
+    echo "使用 --force 覆盖，或先备份你的文件。" >&2
+    exit 2
+  fi
+
+  if [[ "$DRY_RUN" == "1" ]]; then
+    log "[dry-run] 将复制 $TEMPLATES_DIR/. 到 $dest/"
+    return 0
+  fi
+
+  # 合并复制（不覆盖用户已有文件，除非使用 --force）
+  local cp_flag="-n"
+  [[ "$FORCE" == "1" ]] && cp_flag=""
+  (cd "$TEMPLATES_DIR" && cp -r $cp_flag . "$dest/")
+
+  log "模板已安装。"
+  log "AtomCode 会自动加载项目根目录的 AGENTS.md，PDCA 指令即时生效。"
+  log "下一步：在 AtomCode 中输入：安装 ai-coding-ok，我想做一个xxx"
+  log "      AtomCode 会根据你的项目自动填充所有占位符。"
+}
+
 case "$MODE" in
   claude)   install_claude ;;
   opencode) install_opencode ;;
   copilot)  install_copilot ;;
   cursor)   install_cursor ;;
   codex)    install_codex ;;
+  atomcode) install_atomcode ;;
   both)     install_claude; install_opencode ;;
   *)        die "未知模式：$MODE" ;;
 esac

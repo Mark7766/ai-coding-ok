@@ -7,6 +7,23 @@
 
 ---
 
+## [v4.2.0] - 2026-09-27
+
+### Added
+
+- **AtomCode 支持** — AtomCode 原生加载项目根目录 `AGENTS.md`，ai-coding-ok 的 PDCA 强制指令安装即生效。六平台覆盖：Claude Code + Copilot + Cursor + OpenCode + Codex + AtomCode
+- **`install.sh` / `install.py` 新增 `--atomcode` 模式** — 交互菜单新增第 7 项 AtomCode 选项，将 `templates/zh/` 模板复制到项目目录（`--target` 可指定目标，`--force` 才覆盖已有文件），与 Copilot/Cursor 模式同属"项目内安装"路径
+
+### Changed
+
+- **SKILL.md** — compatibility 新增 `atomcode`；「非 Claude Code 用户」章节改为「Copilot / Cursor / OpenCode / Codex / AtomCode」；安装说明新增 `install.sh --atomcode` 用法
+- **AGENTS.md** — 跨平台兼容层新增 AtomCode（AGENTS.md 自动加载，无独立 skill 入口）
+- **README.md** — 安装章节新增「方式二：AtomCode（项目内安装）」；Works with 徽章、文件结构图、设计哲学同步更新
+
+### 兼容性说明
+
+AtomCode 与 Codex/OpenCode 共享 AGENTS.md 加载机制，无独立 skill 定义文件；占位符填充通过对话内指令（`安装 ai-coding-ok，我想做一个xxx`）由 AI 自动完成。
+
 ## [v4.1.0] - 2026-07-25
 
 ### 新增

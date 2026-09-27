@@ -4,8 +4,8 @@
 > superpowers 给 Claude 一个 session 的纪律。ai-coding-ok 给 Claude 跨 50 次迭代依然准确的记忆。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Works with](https://img.shields.io/badge/Works%20with-Claude%20Code%20%7C%20Copilot%20%7C%20Cursor%20%7C%20OpenCode%20%7C%20Codex-blueviolet)](#)
-[![Version](https://img.shields.io/badge/Version-v4.1.0-blue)](#)
+[![Works with](https://img.shields.io/badge/Works%20with-Claude%20Code%20%7C%20Copilot%20%7C%20Cursor%20%7C%20OpenCode%20%7C%20Codex%20%7C%20AtomCode-blueviolet)](#)
+[![Version](https://img.shields.io/badge/Version-v4.2.0-blue)](#)
 
 ---
 
@@ -88,7 +88,20 @@ AI 会读取 skill 中的模板，自动复制到项目里，根据你的一句�
 
 ---
 
-### 方式二：Copilot / Cursor
+### 方式二：AtomCode（项目内安装）
+
+AtomCode 原生加载项目根目录的 `AGENTS.md`，PDCA 强制指令安装即生效，无需 skill 入口：
+
+```bash
+bash ~/ai-coding-ok/install.sh --atomcode --target /path/to/project
+# 在项目根目录执行时可省略 --target
+```
+
+安装后在 AtomCode 中输入：`安装 ai-coding-ok，我想做一个xxx`，AtomCode 会根据你的项目自动填充所有占位符。
+
+---
+
+### 方式三：Copilot / Cursor
 
 这两种工具没有 skill 系统，需要**在每个项目里单独复制模板**。
 
@@ -116,7 +129,7 @@ bash ~/ai-coding-ok/install.sh --cursor    # Cursor
 
 ```
 你的项目/
-├── AGENTS.md                          # 架构速查（AI 首先读取，Codex/OpenCode 自动加载）
+├── AGENTS.md                          # 架构速查（AI 首先读取，Codex/OpenCode/AtomCode 自动加载）
 ├── CLAUDE.md                          # Claude Code 自动加载 shim → @AGENTS.md
 ├── .codex/skills/ai-coding-ok/        # Codex skill 定义
 ├── .cursor/rules/ai-coding-ok.mdc     # Cursor：alwaysApply PDCA 规则
@@ -239,7 +252,7 @@ bash ~/ai-coding-ok/scripts/verify.sh
 
 ## 设计哲学
 
-1. **一次安装，所有工具** — Claude Code、Copilot、Cursor、OpenCode、Codex 共享同一套模板
+1. **一次安装，所有工具** — Claude Code、Copilot、Cursor、OpenCode、Codex、AtomCode 共享同一套模板
 2. **让 AI 定制 AI 的配置** — 用户说一句话，AI 推断其余
 3. **默认安全** — 除非 `--force`，否则永不覆盖已有文件
 4. **可审计** — 每次安装/升级在 `task-history.md` 中留下痕迹

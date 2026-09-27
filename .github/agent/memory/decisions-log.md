@@ -217,3 +217,35 @@
 > - AGENTS.md 跨平台兼容层新增 Codex
 > - README 新增 Codex 安装说明
 > - 版本号 v4.0.0 → v4.1.0
+
+---
+
+### ADR-007: 新增 AtomCode 支持
+
+- **日期**：2026-09-27
+- **状态**：✅ 已采纳
+- **决策者**：leonard + AtomCode
+
+#### 背景
+> AtomCode 是 AI 编程工具，其行为与 Codex/OpenCode 一致：原生加载项目根目录的 `AGENTS.md`。ai-coding-ok 已覆盖 Claude Code、Copilot、Cursor、OpenCode、Codex 五个平台，需要评估是否以及如何支持 AtomCode。
+
+#### 方案对比
+
+| 方案 | 优点 | 缺点 |
+|------|------|------|
+| A: 仅依赖 AGENTS.md 自动加载 | 零额外模板工作 | 无正式安装入口，用户需手动复制模板 |
+| B: AGENTS.md 自动加载 + `--atomcode` 安装模式 | 与 Codex 对齐，项目内安装一键完成，占位符由 AI 对话填充 | 无独立 skill 文件（AtomCode 无 skill 目录约定） |
+
+#### 决策
+> 选择方案 B：**AGENTS.md 自动加载 + `install.sh`/`install.py` 新增 `--atomcode` 模式**。
+
+#### 理由
+> AtomCode 自动加载 AGENTS.md 后，PDCA 强制指令（Plan 读记忆 → Do 编码 → Act 写回记忆）天然生效，无需额外 skill 文件。新增 `--atomcode` 模式提供正式的安装入口，行为与 `--copilot`/`--cursor` 同属"项目内安装"路径（复制 `templates/zh/` 到项目目录），保持安装脚本的架构一致性。
+
+#### 影响
+> - install.sh/install.py 新增 `--atomcode` 模式（交互菜单第 7 项）
+> - SKILL.md compatibility 新增 `atomcode`，标题与安装说明同步
+> - AGENTS.md 跨平台兼容层新增 AtomCode
+> - README 新增「方式二：AtomCode（项目内安装）」章节
+> - 版本号 v4.1.0 → v4.2.0
+> - 平台覆盖：Claude Code + Copilot + Cursor + OpenCode + Codex + AtomCode（六平台）
