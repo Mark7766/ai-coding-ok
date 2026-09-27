@@ -10,6 +10,7 @@
     python install.py --copilot              # 将模板复制到当前目录
     python install.py --cursor               # 将模板 + .cursor/rules/ 复制到当前目录
     python install.py --codex                # 将模板 + .codex/skills/ 复制到当前目录
+    python install.py --atomcode             # 将模板复制到当前目录（AtomCode 自动加载 AGENTS.md）
     python install.py --copilot --target C:/path/to/project
     python install.py --cursor  --target C:/path/to/project
     python install.py --codex   --target C:/path/to/project
@@ -28,6 +29,7 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).resolve().parent
 CONFLICT_PATHS_COPILOT = ("AGENTS.md", "CLAUDE.md", ".github/copilot-instructions.md", ".github/agent")
 CONFLICT_PATHS_CURSOR  = ("AGENTS.md", "CLAUDE.md", ".cursor/rules/ai-coding-ok.mdc", ".github/agent")
+CONFLICT_PATHS_ATOMCODE = ("AGENTS.md", "CLAUDE.md", ".github/agent")
 
 
 def log(msg: str) -> None:
@@ -203,9 +205,30 @@ def install_codex(args: argparse.Namespace) -> None:
     log("在任意项目中启动 Codex，然后说：安装 ai-coding-ok，我想做一个xxx")
 
 
+def install_atomcode(args: argparse.Namespace) -> None:
+    templates_dir = get_templates_dir()
+    dest = Path(args.target).resolve() if args.target else Path.cwd()
+    log(f"安装 AtomCode 模板 -> {dest}")
+
+    # AtomCode 原生加载项目根目录的 AGENTS.md，PDCA 指令安装即生效
+    conflicts = [p for p in CONFLICT_PATHS_ATOMCODE if (dest / p).exists()]
+    if conflicts and not args.force:
+        print("[ai-coding-ok] 错误：发现冲突文件：", file=sys.stderr)
+        for c in conflicts:
+            print(f"  - {c}", file=sys.stderr)
+        print("使用 --force 覆盖，或先备份你的文件。", file=sys.stderr)
+        sys.exit(2)
+
+    copy_tree(templates_dir, dest, overwrite=args.force, dry_run=args.dry_run)
+    log("模板已安装。")
+    log("AtomCode 会自动加载项目根目录的 AGENTS.md，PDCA 指令即时生效。")
+    log("下一步：在 AtomCode 中输入：安装 ai-coding-ok，我想做一个xxx")
+    log("      AtomCode 会根据你的项目自动填充所有占位符。")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="ai-coding-ok 安装脚本——将模板复制到项目中，支持 Claude Code / Copilot / Cursor / OpenCode / Codex"
+        description="ai-coding-ok 安装脚本——将模板复制到项目中，支持 Claude Code / Copilot / Cursor / OpenCode / Codex / AtomCode"
     )
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--claude-code", "--claude", action="store_true", dest="claude")
@@ -213,13 +236,14 @@ def main() -> None:
     mode.add_argument("--copilot", action="store_true")
     mode.add_argument("--cursor", action="store_true")
     mode.add_argument("--codex", action="store_true")
+    mode.add_argument("--atomcode", action="store_true")
     mode.add_argument("--both", action="store_true")
-    parser.add_argument("--target", help="适用于 --copilot / --cursor 的目标项目目录")
+    parser.add_argument("--target", help="适用于 --copilot / --cursor / --atomcode 的目标项目目录")
     parser.add_argument("--force", "-f", action="store_true", help="覆盖已有文件")
     parser.add_argument("--dry-run", "-n", action="store_true", help="预览操作，不实际写入")
     args = parser.parse_args()
 
-    if not (args.claude or args.opencode or args.copilot or args.cursor or args.codex or args.both):
+    if not (args.claude or args.opencode or args.copilot or args.cursor or args.codex or args.atomcode or args.both):
         print("\nai-coding-ok 安装脚本\n")
         print("选择安装方式：")
         print("  1) Claude Code skill  — 安装到 ~/.claude/skills/ai-coding-ok")
@@ -227,14 +251,16 @@ def main() -> None:
         print("  3) GitHub Copilot     — 将模板复制到项目目录")
         print("  4) Cursor             — 将模板 + .cursor/rules/ 复制到项目目录")
         print("  5) Codex              — 将模板 + .codex/skills/ 复制到项目目录")
+        print("  7) AtomCode           — 将模板复制到项目目录（自动加载 AGENTS.md）")
         print("  6) Claude Code + OpenCode（推荐 agentic CLI 用户）")
-        choice = input("选项 [1/2/3/4/5/6]：").strip()
+        choice = input("选项 [1/2/3/4/5/6/7]：").strip()
         {
             "1": lambda: setattr(args, "claude", True),
             "2": lambda: setattr(args, "opencode", True),
             "3": lambda: setattr(args, "copilot", True),
             "4": lambda: setattr(args, "cursor", True),
             "5": lambda: setattr(args, "codex", True),
+            "7": lambda: setattr(args, "atomcode", True),
             "6": lambda: setattr(args, "both", True),
         }.get(choice, lambda: die("无效选项", 1))()
 
@@ -248,6 +274,8 @@ def main() -> None:
         install_cursor(args)
     if args.codex:
         install_codex(args)
+    if args.atomcode:
+        install_atomcode(args)
 
     log("全部完成。")
 

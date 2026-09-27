@@ -2,14 +2,14 @@
 name: ai-coding-ok
 description: 在任何编码任务（feat、fix、bug、refactor、plan、design、brainstorm、code review、implement、add feature、write tests、新功能、修复、重构）时首先使用此 skill——当项目包含 `.github/agent/memory/` 或 `AGENTS.md` 时。在编写代码前加载三层项目记忆（project-memory、decisions-log、task-history）和 AGENTS.md，完成任务后更新 task-history（始终）、decisions-log（架构变更时）和 project-memory（事实变更时）——这是 PDCA 护栏，防止"AI 修了 bug X 却搞坏了功能 Y"跨迭代发生。同时处理 INSTALL（用户说"install ai-coding-ok"、"初始化 ai-coding-ok"等，或项目尚无 `.github/agent/memory/` 时）——复制模板并定制占位符。也处理 UPGRADE（用户说"upgrade ai-coding-ok"、"升级 ai-coding-ok"等）——将项目文件与最新模板 diff 并应用框架级变更，同时保留项目定制。
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep
-compatibility: claude, opencode, cursor, copilot, codex
+compatibility: claude, opencode, cursor, copilot, codex, atomcode
 ---
 
 # ai-coding-ok — PDCA 记忆闭环
 
 > ⚠️ **贡献者注意**：本文件与 [`skills/ai-coding-ok/SKILL.md`](skills/ai-coding-ok/SKILL.md) 保持同步。`skills/ai-coding-ok/SKILL.md` 是规范源文件——当用户通过 `install.sh --claude-code` 安装到 `~/.claude/skills/ai-coding-ok/` 后，Claude Code 加载的是 `skills/` 目录下的版本。根目录的 SKILL.md 提供给直接在仓库目录中工作的开发者。**修改时请编辑 `skills/ai-coding-ok/SKILL.md` 然后执行 `cp skills/ai-coding-ok/SKILL.md SKILL.md` 再提交。**
 
-三层记忆系统 + AI 编程护栏。PDCA 闭环（Plan → Do → Check → Act）在每次编码迭代中保持项目 context 准确。支持 Claude Code、GitHub Copilot、OpenCode、Cursor 和 OpenAI Codex CLI。
+三层记忆系统 + AI 编程护栏。PDCA 闭环（Plan → Do → Check → Act）在每次编码迭代中保持项目 context 准确。支持 Claude Code、GitHub Copilot、OpenCode、Cursor、OpenAI Codex CLI 和 AtomCode。
 
 ## 安装内容
 
@@ -412,15 +412,15 @@ cp -rn <project-root>/templates/zh/. <项目根目录>/
 - <如有>
 ```
 
-## 非 Claude Code 用户（Copilot / Cursor / OpenCode / Codex）
+## 非 Claude Code 用户（Copilot / Cursor / OpenCode / Codex / AtomCode）
 
 这些工具不会加载 SKILL.md。用户通过以下方式获得相同的价值：
 
-1. 在 ai-coding-ok 仓库根目录运行 `install.sh`（或 `install.py`）一次，将 `templates/zh/` 复制到项目中。
+1. 在 ai-coding-ok 仓库根目录运行 `install.sh --atomcode`（或对应平台模式 / `install.py`）一次，将 `templates/zh/` 复制到项目中。
 2. 工具会自动加载对应文件：
    - Copilot 加载 `.github/copilot-instructions.md`
    - Cursor 加载 `.cursor/rules/ai-coding-ok.mdc`
-   - OpenCode 和 Codex 加载 `AGENTS.md`
+   - OpenCode、Codex 和 AtomCode 加载 `AGENTS.md`
    - Codex 还支持 `.codex/skills/ai-coding-ok/SKILL.md` skill 文件
 3. 如需初始占位符定制，将 `scripts/customize-prompt.md` 粘贴到工具的对话中触发替换。
 

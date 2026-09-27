@@ -21,6 +21,13 @@
 
 ## 任务记录
 
+### [TASK-008] v4.2.0 新增 AtomCode 支持
+- **日期**：2026-09-27
+- **类型**：feat
+- **摘要**：新增 AtomCode 平台支持（分支 feat/add-atomcode，准备提 PR）。AtomCode 原生加载项目根目录 AGENTS.md，PDCA 指令安装即生效。install.sh/install.py 新增 --atomcode 模式（交互菜单第 7 项，项目内安装路径，与 --copilot/--cursor 一致：复制 templates/zh/、冲突检查、--force 才覆盖）。SKILL.md compatibility 新增 atomcode 并同步 skills/ 副本。根 AGENTS.md 兼容层新增 AtomCode。README 新增「方式二：AtomCode（项目内安装）」章节（原方式二顺延为方式三）、徽章/结构图/设计哲学更新。CHANGELOG 新增 v4.2.0 条目。新增 ADR-007。
+- **变更文件**：install.sh、install.py、SKILL.md、skills/ai-coding-ok/SKILL.md、AGENTS.md、README.md、CHANGELOG.md、decisions-log.md（ADR-007）、project-memory.md、task-history.md
+- **注意事项**：AtomCode 无 skill 目录约定，故无独立 skill 模板文件——这是与 Codex（ADR-006）的关键差异，模板目录 templates/zh/ 未新增文件。
+
 ### [TASK-001] 安装 ai-coding-ok 并完成项目初始化（dogfooding）
 - **日期**：2026-06-08
 - **类型**：chore

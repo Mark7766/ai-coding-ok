@@ -1,4 +1,4 @@
-<!-- ai-coding-ok: v4.1.0 -->
+<!-- ai-coding-ok: v4.2.0 -->
 # AGENTS.md — ai-coding-ok
 
 ## ⚠️ AI Agent 必读规范（每次任务必须执行）
@@ -47,6 +47,7 @@ CLAUDE.md (@AGENTS.md) ──→ AGENTS.md (PDCA 强制指令)
   Copilot      → .github/copilot-instructions.md (自动加载)
   Cursor       → .cursor/rules/ai-coding-ok.mdc
   Codex        → AGENTS.md (自动加载) + .codex/skills/ai-coding-ok/ (skill)
+  AtomCode     → AGENTS.md (自动加载，无独立 skill 入口)
 ```
 
 - **`SKILL.md`** — Skill 定义文件，包含 Mode A(Install) / B(Plan) / C(Act) / D(Upgrade) 完整逻辑

@@ -14,7 +14,7 @@
 | 项目类型 | AI 编程护栏 Skill 框架 |
 | 业务场景 | 为任意开发者项目安装三层记忆系统（project-memory + decisions-log + task-history），强制执行 PDCA 工作流，防止 AI "修了 bug X 搞坏功能 Y" |
 | 用户规模 | 面向所有使用 Claude Code、GitHub Copilot、Cursor 的开发者 |
-| 当前阶段 | v4.1.0 已完成（新增 Codex 支持：OpenAI Codex CLI 原生加载 AGENTS.md，新增 .codex/skills/ai-coding-ok/ skill 模板，install.sh/py 新增 --codex 模式。五平台覆盖：Claude Code + Copilot + Cursor + OpenCode + Codex） |
+| 当前阶段 | v4.2.0 已完成（新增 AtomCode 支持：原生加载 AGENTS.md，install.sh/py 新增 --atomcode 模式。六平台覆盖：Claude Code + Copilot + Cursor + OpenCode + Codex + AtomCode） |
 | 设计原则 | 可靠 > 易用 > 简洁；硬约束 > 软建议；多平台兼容；零外部依赖 |
 | 主语言 | Shell + Python 3 + Markdown（纯中文项目，v4.0.0 起删除英文模板支持） |
 | 后端框架 | 无（非 Web 项目，是 Skill 框架） |
